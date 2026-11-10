@@ -1,7 +1,8 @@
 ---
 import Container from './Container.astro';
 import Logo from './Logo.astro';
-import { MAIN_NAV, NEURON_AI_LINKS, NEURON_AI_SOCIAL, PRIVACY_POLICY_URL } from '../consts/links';
+import SocialLinks from './SocialLinks.astro';
+import { MAIN_NAV, NEURON_AI_LINKS, PRIVACY_POLICY_URL } from '../consts/links';
 import { ariaCurrent, linkTarget } from '../utils/links';
 
 const { pathname } = Astro.url;
@@ -15,9 +16,6 @@ const columns = [
       { label: 'Website', href: NEURON_AI_LINKS.website },
       { label: 'Documentation', href: NEURON_AI_LINKS.docs },
       { label: 'GitHub', href: NEURON_AI_LINKS.github },
-      { label: 'LinkedIn', href: NEURON_AI_SOCIAL.linkedin },
-      { label: 'Instagram', href: NEURON_AI_SOCIAL.instagram },
-      { label: 'X', href: NEURON_AI_SOCIAL.x },
     ],
   },
 ];
@@ -26,7 +24,13 @@ const columns = [
 <footer class="footer">
   <Container>
     <div class="top">
-      <Logo size="xl" />
+      <div class="brand">
+        <Logo size="xl" />
+        <p class="tagline">
+          From the creators of Neuron, everything you need to work with the first agentic framework of the PHP ecosystem.
+        </p>
+        <SocialLinks />
+      </div>
       <div class="columns">
         {
           columns.map(({ id, heading, links }) => (
@@ -76,6 +80,18 @@ const columns = [
       align-items: flex-end;
       justify-content: space-between;
     }
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-16);
+  }
+
+  .tagline {
+    max-width: var(--measure-s);
+    color: var(--text-subtle);
   }
 
   .columns {
