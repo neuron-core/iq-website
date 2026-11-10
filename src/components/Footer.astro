@@ -1,7 +1,7 @@
 ---
 import Container from './Container.astro';
 import Logo from './Logo.astro';
-import { MAIN_NAV, NEURON_AI_LINKS, PRIVACY_POLICY_URL } from '../consts/links';
+import { MAIN_NAV, NEURON_AI_LINKS, NEURON_AI_SOCIAL, PRIVACY_POLICY_URL } from '../consts/links';
 import { ariaCurrent, linkTarget } from '../utils/links';
 
 const { pathname } = Astro.url;
@@ -15,6 +15,9 @@ const columns = [
       { label: 'Website', href: NEURON_AI_LINKS.website },
       { label: 'Documentation', href: NEURON_AI_LINKS.docs },
       { label: 'GitHub', href: NEURON_AI_LINKS.github },
+      { label: 'LinkedIn', href: NEURON_AI_SOCIAL.linkedin },
+      { label: 'Instagram', href: NEURON_AI_SOCIAL.instagram },
+      { label: 'X', href: NEURON_AI_SOCIAL.x },
     ],
   },
 ];
