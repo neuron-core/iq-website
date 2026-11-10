@@ -1,0 +1,452 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import Subsection from '../components/Subsection.astro';
+import CardGrid from '../components/CardGrid.astro';
+import Card from '../components/Card.astro';
+import BulletList from '../components/BulletList.astro';
+import Button from '../components/Button.astro';
+import ButtonRow from '../components/ButtonRow.astro';
+import MoreLink from '../components/MoreLink.astro';
+import { NEURON_AI_LINKS, PAGES, PARTNER_FORM_URL } from '../consts/links';
+import { FRAMEWORK } from '../consts/framework';
+import { PARTNER_TIERS } from '../consts/partners';
+import { capitalize, compactNumber, formatList, numberWord } from '../utils/format';
+
+const facts = [
+  {
+    title: 'What it is',
+    items: [
+      'The first agentic framework of the PHP ecosystem',
+      `Open source under the ${FRAMEWORK.license} license: the code stays yours`,
+      `More than ${compactNumber(FRAMEWORK.stats.downloads, true)} downloads, and from v1 to v${FRAMEWORK.version} in less than ${numberWord(FRAMEWORK.yearsToCurrentVersion)} years`,
+    ],
+  },
+  {
+    title: 'What it does',
+    items: [
+      `Connects the major AI models (${FRAMEWORK.models.join(', ')})`,
+      'Gives agents memory and connects them to company documents and tools',
+      'Makes several agents work together',
+    ],
+  },
+  {
+    title: 'Where it helps',
+    items: ['New applications that are born agentic', `Across the PHP world: ${FRAMEWORK.phpPlatforms.join(', ')}`],
+  },
+];
+
+const community = [
+  { label: 'Downloads', value: FRAMEWORK.stats.downloads },
+  { label: 'GitHub stars', value: FRAMEWORK.stats.stars },
+  { label: 'Forks', value: FRAMEWORK.stats.forks },
+  { label: 'Contributors', value: FRAMEWORK.stats.contributors },
+];
+
+// "one", or "one or two" when the levels ask for different counts
+const peopleCount = (counts: number[]) =>
+  formatList([...new Set(counts)].sort((a, b) => a - b).map(numberWord), 'or');
+
+const tierNames = PARTNER_TIERS.map((tier) => tier.name);
+const preferentialConditions = 'Preferential conditions on Fly with Neuron (support), certifications and products';
+
+const steps = [
+  'Every level is listed on the Partner Directory.',
+  `Each level asks for certified people on your team: ${peopleCount(PARTNER_TIERS.map((tier) => tier.certified.sales))} in sales, and ${peopleCount(PARTNER_TIERS.map((tier) => tier.certified.tech))} technical.`,
+  `${preferentialConditions} grow from ${tierNames[0]} to ${tierNames[tierNames.length - 1]}.`,
+];
+
+const reasons = ['Bring value to your existing customers', 'Acquire new customers', 'Increase your revenue'];
+---
+
+<BaseLayout
+  title="Neuron Partner Network"
+  description={`Advise and consult on the strategic use and implementation of Neuron AI to accelerate business outcomes at scale. ${formatList(tierNames)} partnership levels.`}
+>
+  <PageHero title="Neuron Partner Network" lead="The future is not predicted, it is prepared for.">
+    <Button href={PARTNER_FORM_URL} size="xl">Become a partner</Button>
+    <Button href="#levels" variant="outline" size="xl">Partnership levels</Button>
+  </PageHero>
+
+  <Section
+    tone="band"
+    title="The PHP opportunity"
+    lead="PHP developers who want to build agentic apps had no real choice: leave PHP, or sit it out."
+  >
+    <blockquote class="quote"><p>“Losing years of PHP knowledge and skills is not an option.”</p></blockquote>
+    <Subsection title="Before Neuron, building an AI agent meant leaving PHP">
+      <CardGrid columns={2}>
+        <Card as="article">
+          <h4 class="title-xs">Before: leaving PHP</h4>
+          <BulletList
+            muted
+            items={[
+              'Your PHP team had to learn another language, or the company had to hire new people',
+              'Two technologies to maintain, or an application to rewrite',
+              'Years of skills stayed out of AI',
+            ]}
+          />
+        </Card>
+        <Card as="article" brand>
+          <h4 class="title-xs">With Neuron: keep using PHP</h4>
+          <BulletList
+            items={[
+              'The same team builds agents with the skills it already has',
+              'One technology, inside the ecosystem your company knows',
+              'The agent is part of the application from day one',
+            ]}
+          />
+        </Card>
+      </CardGrid>
+      <p class="statement">The easy, fast way into a future that is already in your hands.</p>
+    </Subsection>
+  </Section>
+
+  <Section id="neuron-ai" tone="dark" title="Neuron AI: the framework that brought AI agents to PHP">
+    <ButtonRow slot="head">
+      <Button href={NEURON_AI_LINKS.website} variant="outline">Visit neuron-ai.dev</Button>
+      <Button href={NEURON_AI_LINKS.docs} variant="outline">Documentation</Button>
+      <Button href={NEURON_AI_LINKS.github} variant="outline">GitHub</Button>
+    </ButtonRow>
+    <div class="facts">
+      {
+        facts.map(({ title, items }) => (
+          <div class="facts-column">
+            <h3 class="eyebrow">{title}</h3>
+            <ul class="facts-list">
+              {items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+    <Subsection title="The PHP AI community showed up">
+      <dl class="stats">
+        {
+          community.map(({ label, value }) => (
+            <div class="stat">
+              <dt class="stat-label">{label}</dt>
+              <dd class="stat-value">{compactNumber(value)}+</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </Subsection>
+  </Section>
+
+  <Section id="levels" tone="band" title="Partnership levels">
+    <ol class="level-steps">
+      {steps.map((step) => <li>{step}</li>)}
+    </ol>
+    <CardGrid as="ul" columns={3}>
+      {
+        PARTNER_TIERS.map(({ name, conditions, certified }, index) => (
+          <Card as="li" accent={index === PARTNER_TIERS.length - 1 ? 'green' : 'ink'} gap="l">
+            <div class="tier-head">
+              <h3 class="title-s">{name}</h3>
+              <span class="meter" aria-hidden="true">
+                {PARTNER_TIERS.map((_, step) => (
+                  <span class:list={{ on: step <= index }} />
+                ))}
+              </span>
+            </div>
+            <dl class="tier-facts">
+              <div>
+                <dt>Listed on the Partner Directory</dt>
+                <dd class="yes">Yes</dd>
+              </div>
+              <div>
+                <dt>{preferentialConditions}</dt>
+                <dd class:list={{ yes: conditions === 'Yes' }}>{conditions}</dd>
+              </div>
+              <div>
+                <dt>Certification required</dt>
+                <dd>
+                  {certified.sales} Sales, {certified.tech} Tech
+                </dd>
+              </div>
+            </dl>
+          </Card>
+        ))
+      }
+    </CardGrid>
+    <p class="tiers-note"><MoreLink href={PAGES.solutions}>See training and certification</MoreLink></p>
+    <Card as="article" class="referral">
+      <div class="referral-grid">
+        <h3 class="title-s referral-title">Referral Partner</h3>
+        <p class="text-body referral-text">
+          Provide the complete solution to your customer. Leave the key aspects, consultancy and training, to Neuron.
+        </p>
+        <p class="text-body text-subtle referral-text">Conditions on request.</p>
+      </div>
+    </Card>
+  </Section>
+
+  <Section
+    layout="split"
+    title="There’s never been a better time to be a Neuron Partner."
+    lead="Advise and consult on the strategic use and implementation of Neuron AI to accelerate business outcomes at scale."
+  >
+    <h3 class="title-xs">{capitalize(numberWord(reasons.length))} reasons to become a Neuron Partner</h3>
+    <ol class="reasons">
+      {reasons.map((reason) => <li>{reason}</li>)}
+    </ol>
+  </Section>
+
+  <PageHero id="contact" level={2} dark title="Tell us about your company.">
+    <Button href={PARTNER_FORM_URL} size="xl">Become a partner</Button>
+  </PageHero>
+</BaseLayout>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  // The PHP opportunity
+  .quote {
+    max-width: var(--measure-m);
+    padding-top: var(--s-24);
+    border-top: var(--border-width-strong) solid var(--iq-green);
+    color: var(--text-strong);
+    font-size: var(--heading-s-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-s-line);
+
+    @include bp.up(sm) {
+      font-size: var(--heading-m-size);
+      line-height: var(--heading-m-line);
+    }
+  }
+
+  .statement {
+    max-width: var(--measure-m);
+    margin-top: var(--s-56);
+    color: var(--text-strong);
+    font-size: var(--heading-s-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-s-line);
+
+    @include bp.up(sm) {
+      font-size: var(--heading-m-size);
+      line-height: var(--heading-m-line);
+    }
+  }
+
+  // Neuron AI: what it is, what it does, where it helps
+  .facts {
+    display: grid;
+    gap: var(--s-40);
+
+    @include bp.up(md) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--s-32);
+    }
+  }
+
+  .facts-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-16);
+  }
+
+  .facts-list > li {
+    padding-block: var(--s-16);
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+    color: var(--text-strong);
+    font-size: var(--body-l-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--body-l-line);
+  }
+
+  // The community in numbers: a ruled grid, value above its label
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+    border-left: var(--border-width-hairline) solid var(--border-soft);
+
+    @include bp.up(md) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: var(--s-8);
+    padding: var(--s-24);
+    border-right: var(--border-width-hairline) solid var(--border-soft);
+    border-bottom: var(--border-width-hairline) solid var(--border-soft);
+  }
+
+  .stat-value {
+    color: var(--iq-green);
+    font-size: var(--heading-m-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-m-line);
+
+    @include bp.up(sm) {
+      font-size: var(--heading-l-size);
+      line-height: var(--heading-l-line);
+    }
+  }
+
+  .stat-label {
+    color: var(--text-subtle);
+    font-family: var(--font-pixel);
+    font-size: var(--pixel-m-size);
+    line-height: var(--pixel-m-line);
+    text-transform: uppercase;
+  }
+
+  // Partnership levels
+  .level-steps {
+    counter-reset: step;
+    display: grid;
+    margin-bottom: var(--s-40);
+
+    @include bp.up(md) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--s-32);
+    }
+
+    > li {
+      counter-increment: step;
+      display: flex;
+      align-items: baseline;
+      gap: var(--s-16);
+      padding-block: var(--s-16);
+      border-top: var(--border-width-hairline) solid var(--border-soft);
+      color: var(--text-primary);
+      font-size: var(--paragraph-l-size);
+      line-height: var(--paragraph-l-line);
+
+      @include bp.up(md) {
+        padding-block: var(--s-24);
+      }
+
+      &::before {
+        content: counter(step, decimal-leading-zero);
+        flex: none;
+        color: var(--text-brand);
+        font-family: var(--font-pixel);
+        font-size: var(--pixel-m-size);
+        line-height: var(--pixel-m-line);
+      }
+    }
+  }
+
+  .tier-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-16);
+  }
+
+  // One green square per level: how far the preferential conditions go
+  .meter {
+    display: flex;
+    gap: var(--s-4);
+
+    > span {
+      width: var(--s-16);
+      height: var(--s-16);
+      background: var(--bg-soft);
+    }
+
+    > .on {
+      background: var(--iq-green);
+    }
+  }
+
+  .tier-facts > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-6);
+    padding-block: var(--s-16);
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+  }
+
+  .tier-facts dt {
+    color: var(--text-subtle);
+    font-size: var(--body-m-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--body-m-line);
+  }
+
+  .tier-facts dd {
+    color: var(--text-strong);
+    font-size: var(--heading-xs-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-xs-line);
+
+    &.yes {
+      color: var(--text-brand);
+    }
+  }
+
+  .tiers-note {
+    margin-top: var(--s-16);
+  }
+
+  .referral {
+    margin-top: var(--s-32);
+  }
+
+  .referral-grid {
+    display: grid;
+    gap: var(--s-16);
+
+    @include bp.up(md) {
+      grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+      column-gap: var(--s-32);
+      align-items: baseline;
+    }
+  }
+
+  .referral-title {
+    @include bp.up(md) {
+      grid-column: 1 / span 4;
+      grid-row: 1 / span 2;
+    }
+  }
+
+  .referral-text {
+    @include bp.up(md) {
+      grid-column: 5 / span 8;
+    }
+  }
+
+  // Why become a partner
+  .reasons {
+    counter-reset: reason;
+    margin-top: var(--s-24);
+    border-bottom: var(--border-width-hairline) solid var(--border-soft);
+
+    > li {
+      counter-increment: reason;
+      display: flex;
+      align-items: baseline;
+      gap: var(--s-16);
+      padding-block: var(--s-16);
+      border-top: var(--border-width-hairline) solid var(--border-soft);
+      color: var(--text-strong);
+      font-size: var(--heading-xs-size);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--heading-xs-line);
+
+      &::before {
+        content: counter(reason, decimal-leading-zero);
+        flex: none;
+        color: var(--text-brand);
+        font-family: var(--font-pixel);
+        font-size: var(--pixel-m-size);
+        font-weight: var(--font-weight-regular);
+        line-height: var(--pixel-m-line);
+      }
+    }
+  }
+</style>

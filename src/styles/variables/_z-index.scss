@@ -1,0 +1,9 @@
+/* Neuron IQ: stacking order. */
+
+:root {
+  --z-index-low: 9;           /* raised cards */
+  --z-index-medium: 99;       /* dropdowns, mobile menu */
+  --z-index-high: 999;        /* sticky header */
+  --z-index-snackbar: 1000;   /* toasts */
+  --z-index-very-high: 10000; /* modals */
+}

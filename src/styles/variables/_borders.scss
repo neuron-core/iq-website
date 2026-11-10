@@ -1,0 +1,10 @@
+/* Neuron IQ: border widths. Separation comes from hairlines and ground
+   changes, never from shadows. Colors live in _colors.scss (border-soft,
+   border-subtle, focus-ring) because they change with the theme. */
+
+:root {
+  --border-width-hairline: 1px;
+  --border-width-strong: 2px;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+}

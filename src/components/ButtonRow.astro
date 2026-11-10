@@ -1,0 +1,17 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['row', className]}><slot /></div>
+
+<style lang="scss">
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-12);
+  }
+</style>

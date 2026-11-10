@@ -1,0 +1,78 @@
+---
+import { linkTarget } from '../utils/links';
+
+interface Props {
+  href: string;
+  /** cta: the green "Talk to us" block. outline: a secondary action. */
+  variant?: 'cta' | 'outline';
+  /** xl: section calls to action, full width on phones */
+  size?: 'm' | 'xl';
+  class?: string;
+}
+
+const { href, variant = 'cta', size = 'm', class: className } = Astro.props;
+---
+
+<a class:list={['button', variant, { xl: size === 'xl' }, className]} href={href} {...linkTarget(href)}><slot /></a>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  // Square, Geist Pixel uppercase labels
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-8);
+    min-height: max(var(--control-height-l), var(--touch-target-min));
+    padding-inline: var(--s-16);
+    border: var(--border-width-hairline) solid transparent;
+    border-radius: var(--r-0);
+    font-family: var(--font-pixel);
+    font-size: var(--pixel-m-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--pixel-m-line);
+    letter-spacing: var(--pixel-m-tracking);
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--easing-standard),
+      border-color var(--duration-fast) var(--easing-standard),
+      color var(--duration-fast) var(--easing-standard);
+  }
+
+  // The main call to action: the only green block on the page
+  .cta {
+    background: var(--cta-bg);
+    color: var(--cta-text);
+
+    &:hover {
+      background: var(--cta-bg-hover);
+    }
+  }
+
+  .outline {
+    background: transparent;
+    border-color: var(--border-subtle);
+    color: var(--text-strong);
+
+    &:hover {
+      background: var(--bg-soft);
+    }
+  }
+
+  .xl {
+    width: 100%;
+    min-height: max(var(--control-height-xl), var(--touch-target-min));
+    padding: var(--s-12) var(--s-32);
+    font-size: var(--pixel-l-size);
+    line-height: var(--pixel-l-line);
+
+    @include bp.up(xs) {
+      width: auto;
+      min-width: var(--cta-min-width);
+    }
+  }
+</style>

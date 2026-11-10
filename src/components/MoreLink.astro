@@ -1,0 +1,30 @@
+---
+import { linkTarget } from '../utils/links';
+
+interface Props {
+  href: string;
+  class?: string;
+}
+
+const { href, class: className } = Astro.props;
+---
+
+<a class:list={['more', className]} href={href} {...linkTarget(href)}><slot /></a>
+
+<style lang="scss">
+  // A text link to a page or an outside resource
+  .more {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target-min);
+    color: var(--text-brand);
+    font-weight: var(--font-weight-medium);
+    text-decoration: underline;
+    text-decoration-thickness: var(--border-width-hairline);
+    text-underline-offset: var(--s-6);
+
+    &:hover {
+      text-decoration-thickness: var(--border-width-strong);
+    }
+  }
+</style>

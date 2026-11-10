@@ -1,0 +1,138 @@
+---
+import Container from './Container.astro';
+import ButtonRow from './ButtonRow.astro';
+import { slugify } from '../utils/format';
+
+interface Props {
+  id?: string;
+  /** The section's h2. Leave it out only when the caller renders its own heading, and pass `labelledby`. */
+  title?: string;
+  eyebrow?: string;
+  lead?: string;
+  /** The white page by default, a bg-weak band, or a dark highlight */
+  tone?: 'band' | 'dark';
+  /**
+   * stack: the head above the body.
+   * split: the head beside the body, from breakpoint-md.
+   * sidebar: a narrow head column beside a wide body, from breakpoint-md.
+   */
+  layout?: 'stack' | 'split' | 'sidebar';
+  labelledby?: string;
+}
+
+const { id, title, eyebrow, lead, tone, layout = 'stack', labelledby } = Astro.props;
+const titleId = title ? `${id ?? slugify(title)}-title` : undefined;
+---
+
+<section
+  id={id}
+  class:list={['section', tone, layout]}
+  data-theme={tone === 'dark' ? 'dark' : undefined}
+  aria-labelledby={titleId ?? labelledby}
+>
+  <Container class="inner">
+    {
+      title && (
+        <div class="head">
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+          <h2 class="title-l" id={titleId}>{title}</h2>
+          {lead && <p class="text-lead lead">{lead}</p>}
+          <slot name="head" />
+        </div>
+      )
+    }
+    <div class="body"><slot /></div>
+    {
+      Astro.slots.has('cta') && (
+        <ButtonRow class="cta">
+          <slot name="cta" />
+        </ButtonRow>
+      )
+    }
+  </Container>
+</section>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  .section {
+    padding-block: var(--section-padding);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+
+    @include bp.up(sm) {
+      padding-block: var(--section-padding-desktop);
+    }
+  }
+
+  .band {
+    background: var(--bg-weak);
+  }
+
+  .dark {
+    padding-block: var(--s-64);
+
+    @include bp.up(sm) {
+      padding-block: var(--s-100);
+    }
+  }
+
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-36);
+    max-width: var(--measure-l);
+    margin-bottom: var(--s-40);
+
+    @include bp.up(sm) {
+      margin-bottom: var(--s-56);
+    }
+  }
+
+  // The eyebrow sits closer to its title than the other parts of the head
+  .eyebrow {
+    margin-bottom: calc(var(--s-24) - var(--s-36));
+  }
+
+  .lead {
+    max-width: var(--measure-m);
+  }
+
+  .cta {
+    margin-top: var(--s-56);
+  }
+
+  @include bp.up(md) {
+    .split .inner,
+    .sidebar .inner {
+      display: grid;
+      grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+      column-gap: var(--s-32);
+    }
+
+    .split .head,
+    .sidebar .head {
+      margin-bottom: 0;
+    }
+
+    .split .inner {
+      align-items: end;
+    }
+
+    .split .head {
+      grid-column: 1 / span 6;
+    }
+
+    .split .body {
+      grid-column: 8 / span 5;
+    }
+
+    .sidebar .head {
+      grid-column: 1 / span 4;
+    }
+
+    .sidebar .body {
+      grid-column: 6 / span 7;
+    }
+  }
+</style>

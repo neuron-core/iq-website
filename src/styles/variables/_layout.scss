@@ -1,0 +1,34 @@
+/* Neuron IQ: layout tokens. */
+
+@use "breakpoints" as bp;
+
+:root {
+  --max-width: 130rem;                /* 1300px content cap */
+  --grid-columns: 12;
+
+  --section-gap: 22rem;               /* 220px between top-level sections on desktop */
+  --section-padding: calc(var(--section-gap) / 4);          /* phones: half the gap, split above and below */
+  --section-padding-desktop: calc(var(--section-gap) / 2);  /* from breakpoint-sm */
+
+  --header-height: 7.4rem;
+  --control-height-l: 4.6rem;
+  --control-height-m: 4rem;
+  --control-height-xl: 6.4rem;        /* section calls to action */
+  --cta-min-width: 24rem;
+  --touch-target-min: 44px;           /* controls never shrink below this on phones */
+
+  --measure-s: 40ch;
+  --measure-m: 64ch;
+  --measure-l: 80ch;
+
+  --table-label-width: 40%;           /* first column of comparison tables */
+  --pixel-mark-size: 36rem;           /* the square ornament in hero and contact */
+  --pixel-scale: 0.84;                /* a pixel drawn inside its cell, leaving a gap */
+  --pixel-scale-s: 0.5;               /* small pixels: the black box row */
+  --scene-max-width: 48rem;           /* the control tower scene on phones */
+
+  /* Breakpoints, generated from the Sass map in _breakpoints.scss */
+  @each $name, $value in bp.$breakpoints {
+    --breakpoint-#{$name}: #{$value};
+  }
+}

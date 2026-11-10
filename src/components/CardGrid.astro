@@ -1,0 +1,35 @@
+---
+interface Props {
+  /** 2: side by side from breakpoint-sm. 3: from breakpoint-md. */
+  columns: 2 | 3;
+  as?: 'ul' | 'div';
+  class?: string;
+}
+
+const { columns, as: Tag = 'div', class: className } = Astro.props;
+---
+
+<Tag class:list={['grid', `columns-${columns}`, className]}><slot /></Tag>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  .grid {
+    display: grid;
+    gap: var(--s-16);
+  }
+
+  .columns-2 {
+    @include bp.up(sm) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-32);
+    }
+  }
+
+  .columns-3 {
+    @include bp.up(md) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--s-32);
+    }
+  }
+</style>

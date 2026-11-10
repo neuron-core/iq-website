@@ -1,0 +1,95 @@
+---
+import Section from './Section.astro';
+import type { FaqItem } from '../consts/faq';
+
+interface Props {
+  items: FaqItem[];
+}
+
+// The default slot takes the call to action: beside the questions on desktop,
+// left out on phones, where the contact block right below carries it.
+const { items } = Astro.props;
+---
+
+<Section id="faq" title="FAQ" tone="band" layout="sidebar">
+  <div class="cta" slot="head"><slot /></div>
+  <div class="list">
+    {
+      items.map(({ question, answer }) => (
+        <details class="item">
+          <summary class="question">
+            {question}
+            <span class="icon" aria-hidden="true" />
+          </summary>
+          <p class="answer">{answer}</p>
+        </details>
+      ))
+    }
+  </div>
+</Section>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  .cta {
+    display: none;
+
+    // The button follows the reader down the questions
+    @include bp.up(md) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: sticky;
+      top: calc(var(--header-height) + var(--s-40));
+    }
+  }
+
+  // Native disclosures with "+" and "−" in Geist Pixel
+  .list {
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+  }
+
+  .item {
+    border-bottom: var(--border-width-hairline) solid var(--border-soft);
+  }
+
+  .question {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-24);
+    padding-block: var(--s-24);
+    color: var(--text-strong);
+    font-size: var(--heading-xs-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-xs-line);
+    list-style: none;
+    cursor: pointer;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  .icon {
+    flex: none;
+    color: var(--text-brand);
+    font-family: var(--font-pixel);
+    font-size: var(--heading-xs-size);
+    line-height: var(--heading-xs-line);
+
+    &::before {
+      content: "+";
+    }
+  }
+
+  .item[open] .icon::before {
+    content: "\2212";
+  }
+
+  .answer {
+    max-width: var(--measure-m);
+    padding-bottom: var(--s-24);
+    color: var(--text-subtle);
+  }
+</style>

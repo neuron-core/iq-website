@@ -1,0 +1,395 @@
+---
+// Neuron IQ Premium: the control tower, animated.
+// A pixel scene in the brand's square language. The tower follows every
+// flight (your agents) while the radar sweeps the airspace. One flight
+// stalls and raises an alert; the technicians from the team that created
+// Neuron reach it, the flight gets back on course, and the black box
+// records every step.
+//
+// Pure CSS, no script. The scene is a 20 x 16 grid of square cells: grid
+// lines and translate steps below are drawing coordinates (one cell = 100%
+// of a pixel's own width). Motion stops for prefers-reduced-motion and the
+// scene shows one meaningful still frame instead.
+
+const pixels = (count: number) => Array.from({ length: count });
+
+const keys = [
+  { kind: 'agent', label: 'Your agents in production' },
+  { kind: 'team', label: 'The team that created Neuron' },
+  { kind: 'alert', label: 'Alerts and recovery' },
+  { kind: 'log', label: 'Every run recorded' },
+];
+---
+
+<figure class="ct">
+  <div class="scene" aria-hidden="true">
+    <span class="px beacon"></span>
+    <span class="cabin">{pixels(3).map(() => <span class="px" />)}</span>
+    <span class="shaft">{pixels(8).map(() => <span class="px" />)}</span>
+    <span class="base">{pixels(3).map(() => <span class="px" />)}</span>
+    <span class="sweep"></span>
+    <span class="lane lane-1"><span class="px flight"></span></span>
+    <span class="lane lane-2"><span class="px flight"></span></span>
+    <span class="lane lane-3"><span class="px flight"></span></span>
+    <span class="lane lane-4"><span class="ring"></span><span class="px flight"></span></span>
+    <span class="beam"></span>
+    <span class="px tech tech-a"></span>
+    <span class="px tech tech-b"></span>
+    <span class="ground"></span>
+    <span class="log">{pixels(20).map(() => <span class="px" />)}<span class="px head"></span></span>
+  </div>
+  <figcaption class="legend">
+    <ul class="keys">
+      {
+        keys.map(({ kind, label }) => (
+          <li>
+            <span class:list={['key', `key-${kind}`]} aria-hidden="true" />
+            {label}
+          </li>
+        ))
+      }
+    </ul>
+  </figcaption>
+</figure>
+
+<style lang="scss">
+  .ct {
+    width: 100%;
+  }
+
+  .scene {
+    display: grid;
+    grid-template-columns: repeat(20, minmax(0, 1fr));
+    grid-template-rows: repeat(16, minmax(0, 1fr));
+    width: 100%;
+    aspect-ratio: 5 / 4;
+  }
+
+  // One pixel: a cell-sized square drawn slightly smaller than its cell
+  .px {
+    display: block;
+    width: 100%;
+    height: 100%;
+    scale: var(--pixel-scale);
+    background: var(--bg-soft);
+  }
+
+  // ---------- The tower ----------
+  .beacon {
+    grid-column: 2;
+    grid-row: 2;
+    background: var(--iq-green);
+    animation: ct-blink var(--duration-blink) step-end infinite;
+  }
+
+  .cabin,
+  .base {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-column: 1 / span 3;
+  }
+
+  .cabin {
+    grid-row: 3;
+
+    > .px {
+      background: var(--text-strong);
+    }
+  }
+
+  .shaft {
+    display: grid;
+    grid-template-rows: repeat(8, minmax(0, 1fr));
+    grid-column: 2;
+    grid-row: 4 / span 8;
+  }
+
+  .shaft > .px,
+  .base > .px {
+    background: var(--text-disabled);
+  }
+
+  .base {
+    grid-row: 12;
+  }
+
+  // ---------- The airspace: radar sweep and four flight lanes ----------
+  .sweep {
+    position: relative;
+    grid-column: 6 / span 15;
+    grid-row: 2 / span 9;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: var(--border-width-hairline);
+      background: var(--border-subtle);
+      animation: ct-sweep var(--duration-sweep) linear infinite;
+    }
+  }
+
+  .lane {
+    position: relative;
+    grid-column: 6 / span 15;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      border-top: var(--border-width-hairline) dashed var(--border-soft);
+    }
+  }
+
+  .lane-1 { grid-row: 3; }
+  .lane-2 { grid-row: 5; }
+  .lane-3 { grid-row: 7; }
+  .lane-4 { grid-row: 9; }
+
+  .flight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1;
+    background: var(--text-strong);
+    opacity: 0;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  .lane-1 .flight {
+    animation-name: ct-fly;
+    animation-duration: var(--duration-flight-m);
+  }
+
+  .lane-2 .flight {
+    animation-name: ct-fly;
+    animation-duration: var(--duration-flight-l);
+    animation-delay: calc(var(--duration-flight-l) / -2);
+  }
+
+  .lane-3 .flight {
+    animation-name: ct-fly;
+    animation-duration: var(--duration-flight-s);
+    animation-delay: calc(var(--duration-flight-s) / -3);
+  }
+
+  // The flight that stalls, gets assisted and goes back on course
+  .lane-4 .flight {
+    animation-name: ct-fly-assisted;
+    animation-duration: var(--duration-cycle);
+  }
+
+  // Alert: a blinking frame around the stalled flight (7th cell of the lane)
+  .ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    aspect-ratio: 1;
+    translate: 600% 0;
+    border: var(--border-width-strong) solid var(--text-strong);
+    opacity: 0;
+    animation: ct-alert var(--duration-cycle) step-end infinite;
+  }
+
+  // ---------- The technicians ----------
+  .beam {
+    position: relative;
+    grid-column: 12;
+    grid-row: 10 / span 2;
+    opacity: 0;
+    transform-origin: bottom;
+    animation: ct-beam var(--duration-cycle) linear infinite;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      border-left: var(--border-width-strong) dashed var(--iq-green);
+    }
+  }
+
+  .tech {
+    grid-row: 12;
+    background: var(--iq-green);
+    animation: ct-assist var(--duration-cycle) var(--easing-standard) infinite;
+  }
+
+  .tech-a {
+    grid-column: 5;
+  }
+
+  .tech-b {
+    grid-column: 4;
+    animation-delay: var(--duration-lag);
+  }
+
+  .ground {
+    grid-column: 1 / -1;
+    grid-row: 13;
+    align-self: start;
+    border-top: var(--border-width-hairline) solid var(--border-subtle);
+  }
+
+  // ---------- The black box ----------
+  .log {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(20, minmax(0, 1fr));
+    grid-column: 1 / -1;
+    grid-row: 15;
+
+    > .px {
+      scale: var(--pixel-scale-s);
+    }
+  }
+
+  .head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1;
+    background: var(--iq-green);
+    animation: ct-record var(--duration-cycle) steps(20, jump-none) infinite;
+  }
+
+  // ---------- Legend ----------
+  .legend {
+    margin-top: var(--s-16);
+  }
+
+  .keys {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-8) var(--s-16);
+
+    > li {
+      display: flex;
+      align-items: center;
+      gap: var(--s-8);
+      color: var(--text-subtle);
+      font-size: var(--body-m-size);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--body-m-line);
+    }
+  }
+
+  .key {
+    flex: none;
+    width: var(--s-12);
+    height: var(--s-12);
+  }
+
+  .key-agent {
+    background: var(--text-strong);
+  }
+
+  .key-team {
+    background: var(--iq-green);
+  }
+
+  .key-alert {
+    border: var(--border-width-strong) solid var(--text-strong);
+  }
+
+  .key-log {
+    scale: var(--pixel-scale-s);
+    background: var(--iq-green);
+  }
+
+  // ---------- Keyframes ----------
+  @keyframes ct-blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+
+  @keyframes ct-sweep {
+    from { left: 0; }
+    to { left: 100%; }
+  }
+
+  // Movement uses the translate property, which is applied outside the pixel's
+  // scale, so one step of 100% is exactly one cell.
+  @keyframes ct-fly {
+    0% { translate: 0 0; opacity: 0; }
+    6%, 94% { opacity: 1; }
+    100% { translate: 1400% 0; opacity: 0; }
+  }
+
+  @keyframes ct-fly-assisted {
+    0% { translate: 0 0; opacity: 0; background: var(--text-strong); }
+    4% { opacity: 1; }
+    25%, 58% { translate: 600% 0; background: var(--text-strong); }
+    60% { translate: 600% 0; background: var(--iq-green); }
+    86% { translate: 1400% 0; opacity: 1; }
+    92%, 100% { translate: 1400% 0; opacity: 0; background: var(--iq-green); }
+  }
+
+  @keyframes ct-alert {
+    0%, 26% { opacity: 0; }
+    27%, 31%, 35%, 39%, 43%, 47%, 51%, 55% { opacity: 1; }
+    29%, 33%, 37%, 41%, 45%, 49%, 53%, 57%, 100% { opacity: 0; }
+  }
+
+  @keyframes ct-assist {
+    0%, 28% { translate: 0 0; }
+    42%, 62% { translate: 700% 0; }
+    76%, 100% { translate: 0 0; }
+  }
+
+  @keyframes ct-beam {
+    0%, 43% { opacity: 0; transform: scaleY(0); }
+    47%, 57% { opacity: 1; transform: scaleY(1); }
+    61%, 100% { opacity: 0; transform: scaleY(1); }
+  }
+
+  @keyframes ct-record {
+    from { translate: 0 0; }
+    to { translate: 1900% 0; }
+  }
+
+  // ---------- Reduced motion: one still frame that tells the story ----------
+  @media (prefers-reduced-motion: reduce) {
+    .scene *,
+    .scene *::before {
+      animation: none !important;
+    }
+
+    .flight {
+      opacity: 1;
+    }
+
+    .lane-1 .flight { translate: 1000% 0; }
+    .lane-2 .flight { translate: 300% 0; }
+    .lane-3 .flight { translate: 1200% 0; }
+
+    .lane-4 .flight {
+      translate: 600% 0;
+      background: var(--iq-green);
+    }
+
+    .tech {
+      translate: 700% 0;
+    }
+
+    .beam {
+      opacity: 1;
+    }
+
+    .head {
+      translate: 1200% 0;
+    }
+  }
+</style>

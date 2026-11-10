@@ -1,0 +1,306 @@
+---
+import Badge from './Badge.astro';
+import Button from './Button.astro';
+
+interface Column {
+  label: string;
+  /** Shown beside the label, e.g. "Coming soon" */
+  badge?: string;
+  /** The column the table argues for: a pale green ground */
+  highlight?: boolean;
+  /** The "What you gain" column: brand-colored text */
+  gain?: boolean;
+  /** Puts the table's call to action under this column, from breakpoint-md */
+  cta?: boolean;
+}
+
+/** Text, or a "Yes" / "No" with an optional badge */
+export type Cell = string | { yes: boolean; badge?: string };
+
+interface Props {
+  /** Header of the row labels column. Matrix tables leave it empty. */
+  corner?: string;
+  columns: Column[];
+  rows: { label: string; cells: Cell[] }[];
+  /** Short values that share a line with their column name on phones */
+  matrix?: boolean;
+  /** Under the columns marked `cta` on desktop, one full-width button under the table on phones */
+  cta?: { label: string; href: string };
+}
+
+const { corner, columns, rows, matrix = false, cta } = Astro.props;
+---
+
+<table class:list={['table', { matrix }]}>
+  <thead>
+    <tr>
+      {corner ? <th scope="col">{corner}</th> : <td />}
+      {
+        columns.map((column) => (
+          <th scope="col" class:list={{ highlight: column.highlight }}>
+            {column.badge ? (
+              <span class="value">
+                {column.label}
+                <Badge>{column.badge}</Badge>
+              </span>
+            ) : (
+              column.label
+            )}
+          </th>
+        ))
+      }
+    </tr>
+  </thead>
+  <tbody>
+    {
+      rows.map((row) => (
+        <tr>
+          <th scope="row">{row.label}</th>
+          {row.cells.map((cell, index) => (
+            <td
+              data-label={columns[index].label}
+              class:list={{ highlight: columns[index].highlight, gain: columns[index].gain }}
+            >
+              {typeof cell === 'string' ? (
+                matrix ? (
+                  <span class="value">{cell}</span>
+                ) : (
+                  cell
+                )
+              ) : (
+                <span class:list={['value', cell.yes ? 'yes' : 'no']}>
+                  {cell.yes ? 'Yes' : 'No'}
+                  {cell.badge && <Badge brand>{cell.badge}</Badge>}
+                </span>
+              )}
+            </td>
+          ))}
+        </tr>
+      ))
+    }
+  </tbody>
+  {
+    cta && (
+      <tfoot>
+        <tr>
+          <td />
+          {columns.map((column) => (
+            <td class:list={{ highlight: column.highlight }}>
+              {column.cta && (
+                <Button href={cta.href} class="foot-cta">
+                  {cta.label}
+                </Button>
+              )}
+            </td>
+          ))}
+        </tr>
+      </tfoot>
+    )
+  }
+</table>
+{
+  cta && (
+    <div class="phone-cta">
+      <Button href={cta.href} size="xl">
+        {cta.label}
+      </Button>
+    </div>
+  )
+}
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  // Phones: every row is a block and each cell shows its column name.
+  // From breakpoint-md: a real table with a bg-soft header row.
+  .table {
+    width: 100%;
+    color: var(--text-primary);
+    font-size: var(--body-l-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--body-l-line);
+    text-align: left;
+  }
+
+  thead,
+  tfoot {
+    display: none;
+  }
+
+  tbody,
+  tr,
+  th,
+  td {
+    display: block;
+  }
+
+  tbody tr {
+    padding-block: var(--s-24);
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+
+    &:last-child {
+      border-bottom: var(--border-width-hairline) solid var(--border-soft);
+    }
+  }
+
+  tbody th {
+    margin-bottom: var(--s-12);
+    color: var(--text-strong);
+    font-size: var(--heading-xs-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-xs-line);
+  }
+
+  td {
+    padding-block: var(--s-10);
+
+    &::before {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: var(--s-6);
+      color: var(--text-subtle);
+      font-family: var(--font-pixel);
+      font-size: var(--pixel-m-size);
+      font-weight: var(--font-weight-regular);
+      line-height: var(--pixel-m-line);
+      text-transform: uppercase;
+    }
+  }
+
+  td.highlight {
+    padding-inline: var(--s-12);
+    background: var(--bg-brand-weak);
+  }
+
+  .gain {
+    color: var(--text-brand);
+  }
+
+  // Matrix: the column name and the value share a line on phones
+  .matrix {
+    tbody th {
+      margin-bottom: var(--s-8);
+    }
+
+    td {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-16);
+      border-top: var(--border-width-hairline) solid var(--border-soft);
+
+      &::before {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .value {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-8);
+    color: var(--text-strong);
+  }
+
+  .yes {
+    color: var(--text-brand);
+  }
+
+  .no {
+    color: var(--text-subtle);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .phone-cta {
+    margin-top: var(--s-40);
+  }
+
+  @include bp.up(md) {
+    .table {
+      display: table;
+      table-layout: fixed;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    tbody {
+      display: table-row-group;
+    }
+
+    tfoot {
+      display: table-footer-group;
+    }
+
+    tr {
+      display: table-row;
+    }
+
+    th,
+    td {
+      display: table-cell;
+      padding: var(--s-16);
+      border-bottom: var(--border-width-hairline) solid var(--border-soft);
+      vertical-align: top;
+    }
+
+    tbody tr,
+    tbody tr:last-child {
+      padding: 0;
+      border: 0;
+    }
+
+    tbody th {
+      margin: 0;
+      font-size: var(--body-l-size);
+      line-height: var(--body-l-line);
+    }
+
+    td::before {
+      content: none;
+    }
+
+    thead > tr > * {
+      background: var(--bg-soft);
+      color: var(--text-strong);
+      font-size: var(--body-m-size);
+      font-weight: var(--font-weight-medium);
+      line-height: var(--body-m-line);
+      vertical-align: bottom;
+    }
+
+    td.highlight {
+      padding-inline: var(--s-16);
+    }
+
+    thead > tr > .highlight {
+      background: var(--bg-brand-weak);
+    }
+
+    .matrix {
+      td {
+        display: table-cell;
+        border-top: 0;
+      }
+
+      thead > tr > :first-child {
+        width: var(--table-label-width);
+      }
+    }
+
+    tfoot td {
+      padding-block: var(--s-24);
+      border-bottom: 0;
+    }
+
+    .foot-cta {
+      width: 100%;
+    }
+
+    .phone-cta {
+      display: none;
+    }
+  }
+</style>

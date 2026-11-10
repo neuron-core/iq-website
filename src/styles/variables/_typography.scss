@@ -1,0 +1,51 @@
+/* Neuron IQ: typography tokens.
+   Sizes are rem on a fluid root, exactly like Neuron AI: 10px on desktop,
+   scaling down to 8px (80%) on phones. 1.6rem = 16px at the desktop root. */
+
+:root {
+  --root-font-size: clamp(0.5rem, 0.24vw + 0.44rem, 0.625rem);
+
+  --font-sans: "Inter", sans-serif;
+  --font-pixel: "GeistPixel", sans-serif;
+
+  /* 400 loads Inter-Light.ttf, 500 loads Inter-Regular.ttf, matching Neuron AI */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+
+  /* Headings: Inter 500 */
+  --heading-xl-size: 5.6rem;
+  --heading-xl-line: 1.2;
+  --heading-l-size: 4.8rem;
+  --heading-l-line: 1.05;
+  --heading-m-size: 3.6rem;
+  --heading-m-line: 1.1;
+  /* Reading sizes below are 2px (0.2rem) above the design system's scale,
+     for comfortable reading; the large titles above keep its values. */
+  --heading-s-size: 3rem;
+  --heading-s-line: 1.3;
+  --heading-xs-size: 2.2rem;
+  --heading-xs-line: 1.3;
+
+  /* Body: Inter 500, table cells and emphasized text */
+  --body-l-size: 1.8rem;
+  --body-l-line: 1.45;
+  --body-m-size: 1.6rem;
+  --body-m-line: 1.45;
+  --body-s-size: 1.4rem;
+  --body-s-line: 1.4;
+
+  /* Paragraph: Inter 400, running copy */
+  --paragraph-l-size: 2rem;
+  --paragraph-l-line: 1.5;
+  --paragraph-m-size: 1.8rem;
+  --paragraph-m-line: 1.45;
+  --paragraph-s-size: 1.6rem;
+  --paragraph-s-line: 1.5;
+
+  /* Pixel: Geist Pixel Square 400, always uppercase, short labels only */
+  --pixel-m-size: 1.6rem;
+  --pixel-m-line: 1;
+  --pixel-m-tracking: 0;
+  --pixel-l-size: 2rem;  /* large call-to-action labels */
+  --pixel-l-line: 1.2;
+}

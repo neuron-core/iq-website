@@ -1,0 +1,242 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import Table, { type Cell } from '../components/Table.astro';
+import CardGrid from '../components/CardGrid.astro';
+import Card from '../components/Card.astro';
+import Badge from '../components/Badge.astro';
+import MoreLink from '../components/MoreLink.astro';
+import Button from '../components/Button.astro';
+import BulletList from '../components/BulletList.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { CONTACT_FORM_URL, PAGES } from '../consts/links';
+import { FRAMEWORK } from '../consts/framework';
+import {
+  CONSOLE_FEATURES,
+  CONSULTING_ROLES,
+  FLY_PACKAGES,
+  NEURON_IQ,
+  NEURON_IQ_PREMIUM,
+  TRAINING,
+  flyPackage,
+} from '../consts/offer';
+import { formatList } from '../utils/format';
+
+const hours = (count: number) => `${count} hours`;
+
+const yes: Cell = { yes: true };
+const no: Cell = { yes: false };
+const priority: Cell = { yes: true, badge: 'Priority' };
+
+const plans = {
+  columns: [
+    { label: 'Neuron AI' },
+    { label: 'Neuron IQ', highlight: true, cta: true },
+    { label: 'Neuron IQ Premium', badge: 'Coming soon', cta: true },
+  ],
+  rows: [
+    { label: `Open source framework (${FRAMEWORK.license}) and community`, cells: [yes, yes, yes] },
+    { label: 'Security patches', cells: [yes, priority, priority] },
+    { label: `Bug fixes on the long-term version (v${FRAMEWORK.version})`, cells: [yes, priority, priority] },
+    { label: 'Priority fixes for your bugs', cells: [no, yes, yes] },
+    { label: 'Direct, dedicated channel with the team that created Neuron', cells: [no, yes, yes] },
+    {
+      label: 'Specialist consulting hours from the creators of Neuron (included)',
+      cells: [no, hours(NEURON_IQ.consultingHours), hours(NEURON_IQ_PREMIUM.consultingHours)],
+    },
+    { label: 'Neuron Subagents package', cells: [no, yes, yes] },
+    { label: 'IQ Streaming Server', cells: [no, yes, yes] },
+    { label: `Console: ${CONSOLE_FEATURES.map((feature) => feature.short).join(', ')}`, cells: [no, no, yes] },
+    { label: `Choice between ${formatList(NEURON_IQ_PREMIUM.deployments)}`, cells: [no, no, yes] },
+  ],
+  cta: { label: 'Talk to us', href: CONTACT_FORM_URL },
+};
+
+const appLimits = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${limit}`), 'unlimited'], 'or');
+---
+
+<BaseLayout
+  title="Neuron IQ solutions: plans, consultancy, support, training and certification"
+  description="Work directly with the team that created Neuron: the Neuron IQ plans compared, Fly with Neuron support packages, training and certification."
+>
+  <PageHero
+    title="Our solutions"
+    lead="From the creators of Neuron, everything you need to work with the first agentic framework of the PHP ecosystem."
+  >
+    <Button href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
+    <Button href="#compare" variant="outline" size="xl">Compare the plans</Button>
+  </PageHero>
+
+  <Section id="compare" tone="band" title="The answer to every need">
+    <Table matrix {...plans} />
+    <CardGrid columns={2} class="offers">
+      <Card as="article" accent="green" gap="l">
+        <h3 class="title-s">Neuron IQ</h3>
+        <p class="text-body">Annual subscription, sized on the applications you have in production: {appLimits}.</p>
+        <p class="includes">Includes {flyPackage(NEURON_IQ.consultingHours)}.</p>
+      </Card>
+      <Card as="article" accent="green" gap="l">
+        <div class="title-row">
+          <h3 class="title-s">Neuron IQ Premium</h3>
+          <Badge>Coming soon</Badge>
+        </div>
+        <p class="text-body">Annual subscription, as {formatList(NEURON_IQ_PREMIUM.deployments, 'or')}.</p>
+        <p class="includes">Includes {flyPackage(NEURON_IQ_PREMIUM.consultingHours)}.</p>
+        <MoreLink href={PAGES.premium} class="card-link">Explore Neuron IQ Premium</MoreLink>
+      </Card>
+    </CardGrid>
+  </Section>
+
+  <Section
+    id="consultancy"
+    tone="dark"
+    title="Consultancy and support"
+    lead="Work directly with the team that created Neuron."
+  >
+    <div class="consult">
+      <BulletList items={CONSULTING_ROLES} size="l" ruled />
+      <div class="consult-packages">
+        <h3 class="title-m">Fly with Neuron support packages</h3>
+        <p class="text-body">
+          <strong class="text-strong">Fly with Neuron:</strong> specialist and advanced consulting packages from the people
+          who created Neuron, for any need.
+        </p>
+        <ul class="packages">
+          {
+            FLY_PACKAGES.map((count) => (
+              <li>
+                <span class="package-name">{flyPackage(count)}</span>
+                <span class="package-hours">{hours(count)}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <Button href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
+      </div>
+    </div>
+  </Section>
+
+  <Section id="training" title="Training and certification">
+    <ul class="ledger">
+      {
+        TRAINING.map(({ name, detail }) => (
+          <li>
+            <span class="ledger-name">{name}</span>
+            {detail && <span class="ledger-detail">{detail}</span>}
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <ContactCta />
+</BaseLayout>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  // The plans, one card each
+  .offers {
+    margin-top: var(--s-56);
+
+    @include bp.up(sm) {
+      margin-top: var(--s-100);
+    }
+  }
+
+  .title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-8) var(--s-12);
+  }
+
+  .includes {
+    margin-top: auto;
+    padding-top: var(--s-16);
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+    color: var(--text-brand);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .card-link {
+    align-self: flex-start;
+    margin-top: auto;
+  }
+
+  // Consultancy and support
+  .consult {
+    display: grid;
+    gap: var(--s-56);
+  }
+
+  .consult-packages {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-24);
+  }
+
+  .packages {
+    display: grid;
+    width: 100%;
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+    border-left: var(--border-width-hairline) solid var(--border-soft);
+
+    @include bp.up(sm) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    > li {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-8);
+      padding: var(--s-24);
+      border-right: var(--border-width-hairline) solid var(--border-soft);
+      border-bottom: var(--border-width-hairline) solid var(--border-soft);
+    }
+  }
+
+  .package-name {
+    color: var(--text-subtle);
+    font-size: var(--body-m-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--body-m-line);
+  }
+
+  .package-hours {
+    color: var(--text-brand);
+    font-size: var(--heading-m-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-m-line);
+  }
+
+  // Training and certification: a name and its detail on one ruled line
+  .ledger {
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+
+    > li {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s-4) var(--s-16);
+      padding-block: var(--s-24);
+      border-bottom: var(--border-width-hairline) solid var(--border-soft);
+    }
+  }
+
+  .ledger-name {
+    color: var(--text-strong);
+    font-size: var(--heading-xs-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-xs-line);
+  }
+
+  .ledger-detail {
+    color: var(--text-subtle);
+    font-size: var(--paragraph-l-size);
+    line-height: var(--paragraph-l-line);
+  }
+</style>

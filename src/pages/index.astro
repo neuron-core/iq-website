@@ -1,0 +1,358 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import CardGrid from '../components/CardGrid.astro';
+import Card from '../components/Card.astro';
+import MoreLink from '../components/MoreLink.astro';
+import Button from '../components/Button.astro';
+import Table from '../components/Table.astro';
+import BulletList from '../components/BulletList.astro';
+import Faq from '../components/Faq.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { CONTACT_FORM_URL, NEURON_AI_LINKS, PAGES } from '../consts/links';
+import { NEURON_IQ, NEURON_IQ_PREMIUM } from '../consts/offer';
+import { FAQ } from '../consts/faq';
+import { capitalize, formatList, numberWord } from '../utils/format';
+
+const solutions = [
+  {
+    name: 'Neuron AI Framework',
+    accent: 'ink',
+    question: '“Can I build AI agents in PHP?”',
+    answer:
+      'Yes, with Neuron: the open source framework to build agentic applications in the language that runs much of the web, the one you and your team already know.',
+    link: { label: 'Visit neuron-ai.dev', href: NEURON_AI_LINKS.website },
+  },
+  {
+    name: 'Neuron IQ',
+    accent: 'green',
+    question: '“Who answer my issues and support the team?”',
+    answer:
+      'The license that includes advanced packages like Subagents and IQ Streaming Server with priority fixes and direct support from the team that created it.',
+    link: { label: 'Explore Neuron IQ', href: '#neuron-iq' },
+  },
+  {
+    name: 'Neuron IQ Premium',
+    accent: 'green',
+    question: '“Who guarantee my infrastructure going to production?”',
+    answer: 'The ready-to-use platform to run, monitor and improve your agents.',
+    link: { label: 'Explore Neuron IQ Premium', href: PAGES.premium },
+  },
+] as const;
+
+const questions = [
+  {
+    question: '“I have a problem and want to fix it faster. Who helps me?”',
+    answer: 'You need a team that knows (and builds) the framework, and responds.',
+    product: { name: 'Neuron IQ', href: '#neuron-iq' },
+  },
+  {
+    question: '“A new version is out. Who guides me?”',
+    answer: 'Fast, safe and certified upgrades, with tools that give you an edge.',
+    product: { name: 'Neuron IQ', href: '#neuron-iq' },
+  },
+  {
+    question: '“What did the agent do? What does it cost?”',
+    answer: 'Continuity under control: one place to see, control and measure.',
+    product: { name: 'Neuron IQ Premium', href: PAGES.premium },
+  },
+];
+
+const comparison = {
+  corner: 'What happens',
+  columns: [
+    { label: 'With Neuron Framework' },
+    { label: 'With Neuron IQ', highlight: true },
+    { label: 'What you gain', gain: true },
+  ],
+  rows: [
+    {
+      label: 'A bug blocks you',
+      cells: [
+        'You report the problem publicly, or fix it yourself. You don’t know when it will be reviewed.',
+        'A private channel with the team that created Neuron. Your bug gets priority.',
+        'You don’t wait in line',
+      ],
+    },
+    {
+      label: 'A new version is released',
+      cells: [
+        'Your team evaluates and adapts everything alone, whenever it finds the time.',
+        'You get help evaluating and moving to the new version, when you decide.',
+        'A battery-included distribution that is always up to date and certified.',
+      ],
+    },
+    {
+      label: 'An important architecture decision',
+      cells: [
+        'You decide alone. If it was wrong, you find out in production.',
+        'You talk it through with the people who know Neuron best, with support hours included.',
+        'You avoid rewriting later',
+      ],
+    },
+    {
+      label: 'A long task, like research or a report',
+      cells: [
+        'The user stares at a spinner. If it takes too long, the request fails.',
+        'With the Neuron Subagents and IQ-stream, the work continues in the background and the user keeps using the chat.',
+        'Richer features, users not blocked',
+      ],
+    },
+  ],
+};
+
+const included = [
+  'Priority fixes for your bugs',
+  'A direct, dedicated channel with the team that created Neuron',
+  `${NEURON_IQ.consultingHours} hours of specialist consulting from the creators of Neuron`,
+  'Neuron advanced extensions like Subagents',
+  'The IQ Streaming Server to relays LLM tokens from application backends to browsers in real time.'
+];
+
+const pages = [
+  {
+    name: 'Neuron IQ Premium',
+    accent: 'green',
+    text: `The ready-to-use platform to run, monitor and improve your agents. Annual subscription, as ${formatList(NEURON_IQ_PREMIUM.deployments, 'or')}.`,
+    link: { label: 'Explore Neuron IQ Premium', href: PAGES.premium },
+  },
+  {
+    name: 'Solutions',
+    accent: 'ink',
+    text: 'Consultancy and support, Fly with Neuron support packages, training and certification, and the plans compared side by side.',
+    link: { label: 'Explore the solutions', href: PAGES.solutions },
+  },
+  {
+    name: 'Neuron Partner Network',
+    accent: 'ink',
+    text: 'Advise and consult on the strategic use and implementation of Neuron AI to accelerate business outcomes at scale.',
+    link: { label: 'Explore the Partner Network', href: PAGES.partners },
+  },
+] as const;
+---
+
+<BaseLayout
+  title="Neuron IQ: priority support and a production platform for Neuron AI"
+  description="Priority support from the team that created Neuron, and a platform to run, watch and improve your PHP AI agents in production."
+>
+  <PageHero
+    title="Build with Neuron. Go to production with the team that created it."
+    lead="Neuron is open source. When your agents start working for your customers, Neuron IQ and Neuron IQ Premium give you the people and the platform to stand behind them."
+  >
+    <Button href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
+    <Button href={PAGES.solutions} variant="outline" size="xl">Compare the plans</Button>
+  </PageHero>
+
+  <Section tone="band" title={`${capitalize(numberWord(solutions.length))} solutions to build the best Agentic Applications in PHP`}>
+    <CardGrid as="ul" columns={3}>
+      {
+        solutions.map(({ name, accent, question, answer, link }) => (
+          <Card as="li" accent={accent}>
+            <h3 class="title-s">{name}</h3>
+            <p class="question">{question}</p>
+            <p class="text-subtle">{answer}</p>
+            <MoreLink href={link.href} class="card-link">
+              {link.label}
+            </MoreLink>
+          </Card>
+        ))
+      }
+    </CardGrid>
+    <p class="closing-line">
+      From the creators of Neuron, everything you need to work with the first agentic framework of the PHP ecosystem.
+    </p>
+  </Section>
+
+  <Section
+    tone="dark"
+    title="Building the agent is just the start. The real questions come later."
+    lead="When an agent works for your customers, every interruption matters. The free framework gives you the engine, but someone has to answer these questions."
+  >
+    <ul class="qa-list">
+      {
+        questions.map(({ question, answer, product }) => (
+          <li class="qa-row">
+            <p class="qa-question">{question}</p>
+            <p class="text-subtle qa-answer">{answer}</p>
+            <p class="qa-product">
+              <a href={product.href}>{product.name}</a>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+    <Button slot="cta" href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
+  </Section>
+
+  <Section
+    id="neuron-iq"
+    tone="band"
+    title="From Neuron Framework to Neuron IQ"
+    lead="A framework you can plan on, with advanced extensions and direct access to the team that created it."
+  >
+    <Table {...comparison} />
+    <div class="included">
+      <div class="included-main">
+        <h3 class="title-m">What is included</h3>
+        <BulletList items={included} ruled />
+      </div>
+      <Card accent="green" gap="l" class="included-aside">
+        <p class="text-body">
+          <strong class="text-strong">Fly with Neuron:</strong> specialist and advanced consulting packages from the people
+          who created Neuron, for any need.
+        </p>
+        <Button href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
+      </Card>
+    </div>
+  </Section>
+
+  <Section title="Explore in detail">
+    <CardGrid as="ul" columns={3}>
+      {
+        pages.map(({ name, accent, text, link }) => (
+          <Card as="li" accent={accent} gap="l">
+            <h3 class="title-s">{name}</h3>
+            <p class="text-body">{text}</p>
+            <MoreLink href={link.href} class="card-link">
+              {link.label}
+            </MoreLink>
+          </Card>
+        ))
+      }
+    </CardGrid>
+  </Section>
+
+  <Faq
+    items={[
+      FAQ.free,
+      FAQ.whyPay,
+      FAQ.securityPatches,
+      FAQ.versions,
+      FAQ.stopPaying,
+      FAQ.data,
+      FAQ.compliance,
+      FAQ.availability,
+    ]}
+  >
+    <Button href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
+  </Faq>
+
+  <ContactCta />
+</BaseLayout>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  // Cards in a row keep their links on one line at the bottom
+  .card-link {
+    align-self: flex-start;
+    margin-top: auto;
+  }
+
+  .question {
+    color: var(--text-strong);
+    font-size: var(--paragraph-l-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--paragraph-l-line);
+  }
+
+  .closing-line {
+    margin-top: var(--s-40);
+    padding-top: var(--s-24);
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+    color: var(--text-primary);
+    font-size: var(--paragraph-l-size);
+    line-height: var(--paragraph-l-line);
+  }
+
+  // The turning point: one question per row
+  .qa-list {
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+  }
+
+  .qa-row {
+    display: grid;
+    gap: var(--s-12);
+    padding-block: var(--s-24);
+    border-bottom: var(--border-width-hairline) solid var(--border-soft);
+
+    @include bp.up(md) {
+      grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+      column-gap: var(--s-32);
+      padding-block: var(--s-36);
+      align-items: baseline;
+    }
+  }
+
+  .qa-question {
+    color: var(--text-strong);
+    font-size: var(--heading-xs-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-xs-line);
+
+    @include bp.up(md) {
+      grid-column: span 5;
+      font-size: var(--heading-s-size);
+      line-height: var(--heading-s-line);
+    }
+  }
+
+  .qa-answer {
+    @include bp.up(md) {
+      grid-column: span 4;
+    }
+  }
+
+  .qa-product {
+    @include bp.up(md) {
+      grid-column: span 3;
+      text-align: right;
+    }
+
+    a {
+      color: var(--text-brand);
+      font-weight: var(--font-weight-medium);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // What Neuron IQ includes, beside the Fly with Neuron offer
+  .included {
+    display: grid;
+    gap: var(--s-40);
+    margin-top: var(--s-56);
+
+    @include bp.up(sm) {
+      margin-top: var(--s-100);
+    }
+
+    @include bp.up(md) {
+      grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+      column-gap: var(--s-32);
+    }
+  }
+
+  .included-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-24);
+
+    @include bp.up(md) {
+      grid-column: 1 / span 7;
+    }
+  }
+
+  .included-aside {
+    align-items: flex-start;
+
+    @include bp.up(md) {
+      grid-column: 9 / span 4;
+      align-self: start;
+    }
+  }
+</style>

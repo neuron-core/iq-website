@@ -1,0 +1,33 @@
+---
+interface Props {
+  title: string;
+}
+
+// A titled block inside a section's body.
+const { title } = Astro.props;
+---
+
+<div class="subsection">
+  <div class="head">
+    <h3 class="title-m">{title}</h3>
+  </div>
+  <slot />
+</div>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  .subsection {
+    margin-top: var(--s-56);
+
+    @include bp.up(sm) {
+      margin-top: var(--s-100);
+    }
+  }
+
+  // The measure is set in body text, so it lives on the head, not the title
+  .head {
+    max-width: var(--measure-l);
+    margin-bottom: var(--s-40);
+  }
+</style>

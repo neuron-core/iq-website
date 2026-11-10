@@ -1,0 +1,404 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import ControlTower from '../components/ControlTower.astro';
+import CardGrid from '../components/CardGrid.astro';
+import Card from '../components/Card.astro';
+import Badge from '../components/Badge.astro';
+import Button from '../components/Button.astro';
+import Table from '../components/Table.astro';
+import BulletList from '../components/BulletList.astro';
+import Faq from '../components/Faq.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { CONTACT_FORM_URL, PAGES } from '../consts/links';
+import { CONSOLE_FEATURES, NEURON_IQ_PREMIUM, flyPackage } from '../consts/offer';
+import { FAQ } from '../consts/faq';
+import { capitalize, formatList, numberWord } from '../utils/format';
+
+const reserveSpot = 'Reserve your spot';
+
+const journey = [
+  {
+    node: 'outline',
+    product: 'Neuron AI',
+    name: 'The plane',
+    text: 'You design and build it yourself, with excellent parts. If something goes wrong, you ask the community.',
+  },
+  {
+    node: 'green',
+    product: 'Neuron IQ',
+    name: 'The mechanics from the team that designed and built it',
+    text: 'The technicians who know your plane better than anyone, by your side, with the priority you need.',
+  },
+  {
+    node: 'ink',
+    product: 'Neuron IQ Premium',
+    badge: 'Coming soon',
+    name: 'The control tower',
+    text: 'You follow every flight, get an alert when something is off, an interrupted flight gets back on course, and the black box records everything. And you know what each plane costs.',
+  },
+];
+
+const beforeAfter = {
+  corner: 'What happens',
+  columns: [
+    { label: 'With Neuron IQ' },
+    { label: 'With Neuron IQ Premium', highlight: true },
+    { label: 'What you gain', gain: true },
+  ],
+  rows: [
+    {
+      label: 'The agent stops halfway',
+      cells: [
+        'Your team has to build and maintain its own recovery system.',
+        'It restarts from the last saved step, handled by the console.',
+        'No recovery system to build',
+      ],
+    },
+    {
+      label: 'Live answers',
+      cells: [
+        'You need extra services, and long answers can break.',
+        'A managed channel: when the browser reconnects, it gets back what it missed.',
+        'Smooth answers on standard hosting',
+      ],
+    },
+    {
+      label: 'The agent gets it wrong, but everything looks fine',
+      cells: [
+        'The application says “ok”. You find out from complaints.',
+        'Every run recorded step by step, with alerts.',
+        'You see it without waiting for complaints',
+      ],
+    },
+    {
+      label: 'You change the AI model or a prompt',
+      cells: [
+        'Test results are scattered and never compared over time.',
+        'Your team’s tests are saved and compared over time.',
+        'Decisions backed by a score',
+      ],
+    },
+    {
+      label: 'The AI bill arrives',
+      cells: [
+        'One number at the end of the month.',
+        'Costs tracked for each application.',
+        'You know which application costs the most',
+      ],
+    },
+    {
+      label: 'A prompt needs improving',
+      cells: [
+        'You need a developer and a release.',
+        'Versions in the console, changes without a release.',
+        'Faster, no waiting for a release',
+      ],
+    },
+  ],
+};
+
+const { deployments, saasRegion, saasProvider } = NEURON_IQ_PREMIUM;
+const [saas, onPremise] = deployments;
+const ways = [
+  {
+    name: saas,
+    points: [
+      'Sign up and start using it',
+      `No infrastructure to manage. Data in ${saasRegion}, hosted by ${saasProvider}`,
+      'For teams with no specific data constraints',
+    ],
+  },
+  {
+    name: capitalize(onPremise),
+    points: [
+      'Runs in your infrastructure: you install and update it',
+      'The data recorded by the platform stays inside your company',
+      'The choice for regulated industries, public bodies and strict internal policies',
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Neuron IQ Premium: the enterprise platform that delivers value"
+  description={`The ready-to-use platform to run, monitor and improve your PHP AI agents, as ${formatList(deployments, 'or')}.`}
+>
+  <PageHero
+    dark
+    badge="Coming soon"
+    title="Neuron IQ Premium: the enterprise platform that delivers value"
+    lead="The ready-to-use platform to run, monitor and improve your agents."
+  >
+    <Button href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
+    <Button href={PAGES.solutions} variant="outline" size="xl">Compare the plans</Button>
+    <ControlTower slot="visual" />
+  </PageHero>
+
+  <Section title="The plane, the mechanics, the control tower">
+    <ol class="journey">
+      {
+        journey.map(({ node, product, badge, name, text }) => (
+          <li class="step">
+            <span class:list={['node', `node-${node}`]} aria-hidden="true" />
+            <p class="product">
+              {product}
+              {badge && <Badge>{badge}</Badge>}
+            </p>
+            <h3 class="step-name">{name}</h3>
+            <p class="text-subtle">{text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+
+  <Section
+    layout="split"
+    eyebrow="The risk you cannot see"
+    title="The agent gets it wrong, but everything looks fine"
+    lead="The application says “ok”. You find out from complaints."
+  >
+    <Card brand gap="l">
+      <p class="text-body">
+        With Neuron IQ Premium every run is recorded step by step, with alerts on errors, loops, slow steps and stuck
+        approvals.
+      </p>
+      <p class="risk-answer">You see it without waiting for complaints.</p>
+    </Card>
+  </Section>
+
+  <Section id="console" tone="band" title="One ready-to-use console">
+    <ul class="console">
+      {
+        CONSOLE_FEATURES.map(({ name, text }) => (
+          <li>
+            <span class="console-mark" aria-hidden="true" />
+            <h3 class="console-name">{name}</h3>
+            <p class="console-text">{text}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="premium-line">
+      Control, clear numbers, less infrastructure to pay for and maintain. Plus, your support is backed by the team that
+      created Neuron.
+    </p>
+  </Section>
+
+  <Section title="Before and after">
+    <Table {...beforeAfter} />
+    <Button slot="cta" href={CONTACT_FORM_URL} size="xl">{reserveSpot}</Button>
+  </Section>
+
+  <Section
+    id="deployment"
+    tone="dark"
+    title={`Neuron IQ Premium: ${numberWord(ways.length)} ways to run it, for every need`}
+  >
+    <CardGrid columns={2}>
+      {
+        ways.map(({ name, points }) => (
+          <Card as="article" accent="green">
+            <h3 class="title-s">{name}</h3>
+            <BulletList items={points} />
+          </Card>
+        ))
+      }
+    </CardGrid>
+    <p class="offer-line">
+      Annual subscription, as {formatList(deployments, 'or')}. Includes {flyPackage(NEURON_IQ_PREMIUM.consultingHours)}.
+    </p>
+    <div class="cta-strip">
+      <p class="cta-strip-text">Your data, where you decide.</p>
+      <Button href={CONTACT_FORM_URL} size="xl" class="cta-strip-button">{reserveSpot}</Button>
+    </div>
+  </Section>
+
+  <Faq items={[FAQ.data, FAQ.compliance, FAQ.versions, FAQ.availability]}>
+    <Button href={CONTACT_FORM_URL} size="xl">{reserveSpot}</Button>
+  </Faq>
+
+  <ContactCta />
+</BaseLayout>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  // The plane, the mechanics, the control tower
+  .journey {
+    display: grid;
+    row-gap: var(--s-40);
+
+    @include bp.up(md) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-12);
+    padding-top: var(--s-36);
+    border-top: var(--border-width-hairline) solid var(--text-strong);
+
+    @include bp.up(md) {
+      padding-right: var(--s-32);
+    }
+  }
+
+  .node {
+    position: absolute;
+    top: calc(var(--s-8) * -1);
+    left: 0;
+    width: var(--s-16);
+    height: var(--s-16);
+    border: var(--border-width-strong) solid var(--text-strong);
+    background: var(--bg-primary);
+  }
+
+  .node-ink {
+    background: var(--text-strong);
+  }
+
+  .node-green {
+    border-color: var(--iq-green);
+    background: var(--iq-green);
+  }
+
+  .product {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-8);
+    color: var(--text-subtle);
+    font-size: var(--body-m-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--body-m-line);
+  }
+
+  .step-name {
+    color: var(--text-strong);
+    font-size: var(--heading-s-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-s-line);
+  }
+
+  .risk-answer {
+    color: var(--text-brand);
+    font-size: var(--heading-s-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-s-line);
+  }
+
+  // One ready-to-use console: a ruled grid of features
+  .console {
+    display: grid;
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+    border-left: var(--border-width-hairline) solid var(--border-soft);
+
+    @include bp.up(sm) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include bp.up(md) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    > li {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-8);
+      padding: var(--s-24);
+      border-right: var(--border-width-hairline) solid var(--border-soft);
+      border-bottom: var(--border-width-hairline) solid var(--border-soft);
+      background: var(--bg-primary);
+
+      @include bp.up(md) {
+        padding: var(--s-28);
+      }
+    }
+  }
+
+  .console-mark {
+    width: var(--s-8);
+    height: var(--s-8);
+    margin-bottom: var(--s-16);
+    background: var(--iq-green);
+  }
+
+  .console-name {
+    color: var(--text-strong);
+    font-size: var(--heading-xs-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-xs-line);
+  }
+
+  .console-text {
+    color: var(--text-subtle);
+    font-size: var(--paragraph-s-size);
+    line-height: var(--paragraph-s-line);
+  }
+
+  .premium-line {
+    max-width: var(--measure-m);
+    margin-top: var(--s-40);
+    color: var(--text-primary);
+    font-size: var(--paragraph-l-size);
+    line-height: var(--paragraph-l-line);
+  }
+
+  // Two ways to run it
+  .offer-line {
+    display: flex;
+    gap: var(--s-12);
+    margin-top: var(--s-24);
+    color: var(--text-subtle);
+
+    &::before {
+      content: "";
+      flex: none;
+      width: var(--s-8);
+      height: var(--s-8);
+      margin-top: var(--s-10);
+      background: var(--iq-green);
+    }
+  }
+
+  // Closes the section on a statement and the call to action
+  .cta-strip {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-24);
+    margin-top: var(--s-56);
+    padding-top: var(--s-40);
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+
+    @include bp.up(sm) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-40);
+    }
+  }
+
+  .cta-strip-text {
+    max-width: var(--measure-m);
+    color: var(--text-strong);
+    font-size: var(--heading-s-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-s-line);
+
+    @include bp.up(sm) {
+      font-size: var(--heading-m-size);
+      line-height: var(--heading-m-line);
+    }
+  }
+
+  .cta-strip-button {
+    flex: none;
+  }
+</style>

@@ -1,0 +1,26 @@
+// Neuron IQ: breakpoints. CSS cannot read custom properties inside @media,
+// so this map is the single source: media queries use `up()`, and
+// _layout.scss emits the matching --breakpoint-* custom properties.
+//
+//   @use "../styles/variables/breakpoints" as bp;
+//   @include bp.up(md) { ... }
+
+@use "sass:map";
+
+$breakpoints: (
+  xs: 480px,
+  sm: 768px,  // two columns start
+  md: 992px,  // full navigation, three columns, real tables
+  lg: 1200px,
+  xl: 1400px,
+);
+
+@mixin up($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Unknown breakpoint `#{$name}`.";
+  }
+
+  @media (min-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}

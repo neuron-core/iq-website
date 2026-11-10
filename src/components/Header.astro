@@ -1,0 +1,180 @@
+---
+import Container from './Container.astro';
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import { CONTACT_FORM_URL, MAIN_NAV } from '../consts/links';
+import { ariaCurrent } from '../utils/links';
+
+const { pathname } = Astro.url;
+---
+
+<header class="header">
+  <Container class="inner">
+    <Logo class="logo" />
+    <nav class="nav" aria-label="Main">
+      <ul class="nav-list">
+        {
+          MAIN_NAV.map(({ label, href }) => (
+            <li>
+              <a class="nav-link" href={href} aria-current={ariaCurrent(href, pathname)}>
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="actions">
+      <Button href={CONTACT_FORM_URL}>Talk to us</Button>
+      <details class="menu">
+        <summary class="toggle">Menu <span class="icon" aria-hidden="true"></span></summary>
+        <nav class="panel" aria-label="Main, mobile">
+          <ul>
+            {
+              MAIN_NAV.map(({ label, href }) => (
+                <li>
+                  <a class="menu-link" href={href} aria-current={ariaCurrent(href, pathname)}>
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </Container>
+</header>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-index-high);
+    background: var(--bg-primary);
+    border-bottom: var(--border-width-hairline) solid var(--border-soft);
+  }
+
+  .inner {
+    display: flex;
+    align-items: center;
+    gap: var(--s-16);
+    min-height: var(--header-height);
+  }
+
+  .logo {
+    margin-right: auto;
+
+    @include bp.up(md) {
+      margin-right: 0;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-8);
+  }
+
+  // Desktop navigation
+  .nav {
+    display: none;
+
+    @include bp.up(md) {
+      display: block;
+      margin-inline: auto;
+    }
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: var(--s-24);
+  }
+
+  .nav-link {
+    color: var(--text-subtle);
+    font-size: var(--paragraph-m-size);
+    line-height: var(--paragraph-m-line);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--easing-standard);
+
+    &:hover {
+      color: var(--text-strong);
+    }
+
+    // The page you are on
+    &[aria-current="page"] {
+      color: var(--text-strong);
+      text-decoration: underline;
+      text-decoration-color: var(--iq-green);
+      text-decoration-thickness: var(--border-width-strong);
+      text-underline-offset: var(--s-8);
+    }
+  }
+
+  // Phone navigation: a native disclosure, no script needed
+  .menu {
+    @include bp.up(md) {
+      display: none;
+    }
+  }
+
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-8);
+    min-height: max(var(--control-height-m), var(--touch-target-min));
+    padding-inline: var(--s-12);
+    border: var(--border-width-hairline) solid var(--border-subtle);
+    color: var(--text-strong);
+    font-family: var(--font-pixel);
+    font-size: var(--pixel-m-size);
+    line-height: var(--pixel-m-line);
+    text-transform: uppercase;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  .icon::before {
+    content: "+";
+  }
+
+  .menu[open] .icon::before {
+    content: "\2212";
+  }
+
+  .panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: var(--z-index-medium);
+    padding: var(--s-8) var(--s-24) var(--s-24);
+    background: var(--bg-primary);
+    border-bottom: var(--border-width-hairline) solid var(--border-soft);
+  }
+
+  .menu-link {
+    display: flex;
+    align-items: center;
+    min-height: max(var(--control-height-l), var(--touch-target-min));
+    border-bottom: var(--border-width-hairline) solid var(--border-soft);
+    color: var(--text-strong);
+    font-size: var(--heading-xs-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-xs-line);
+    text-decoration: none;
+
+    &[aria-current="page"] {
+      color: var(--text-brand);
+    }
+  }
+</style>

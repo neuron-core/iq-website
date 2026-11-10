@@ -1,0 +1,73 @@
+/* Neuron IQ: color tokens (Neuron IQ design system, tokens v1).
+   The page is light. A highlighted section sets data-theme="dark" and every
+   semantic token below flips to Neuron AI's dark palette. */
+
+:root {
+  /* Brand green: identical in both themes. Inside the CMYK gamut, so it prints
+     on fabric and gadgets; confirm the Pantone match with a printed proof. */
+  --iq-green: #00a651;        /* "IQ" of the logo, large accents (24px+), fills */
+  --iq-green-deep: #007a3d;   /* green text on white (5.45:1) */
+  --iq-green-bright: #1db863; /* hover of the green button on dark */
+  --iq-green-tint: #e6f4ec;   /* pale green surface on white */
+  --iq-green-night: #0f2e1e;  /* deep green surface on dark */
+
+  /* Neuron AI framework mark only: never Neuron IQ UI colors */
+  --neuron-pink: #ff42e9;
+  --neuron-green: #00fa00;
+  --neuron-cyan: #24cfff;
+  --neuron-orange: #ff5100;
+
+  /* Same value in both themes */
+  --border-subtle: #7a7a7a;
+  --iq-ink: #171717;
+
+  /* The main call to action, "Talk to us": the same green block on every
+     ground, ink label (5.6:1). No other element on the page is a green fill
+     this size, so the eye always finds it. */
+  --cta-bg: var(--iq-green);
+  --cta-bg-hover: var(--iq-green-bright);
+  --cta-text: var(--iq-ink);
+}
+
+:root,
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-weak: #f7f7f7;
+  --bg-soft: #ebebeb;
+  --bg-brand-weak: var(--iq-green-tint);
+
+  --text-strong: #171717;
+  --text-primary: #262626;
+  --text-subtle: #5c5c5c;
+  --text-disabled: #a3a3a3;
+  --text-brand: var(--iq-green-deep);
+
+  --border-soft: #ebebeb;
+
+  --action-bg: #171717;
+  --action-bg-hover: #333333;
+  --action-text: #ffffff;
+
+  --focus-ring: var(--iq-green-deep);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #171717;
+  --bg-weak: #1c1c1c;
+  --bg-soft: #262626;
+  --bg-brand-weak: var(--iq-green-night);
+
+  --text-strong: #f7f7f7;
+  --text-primary: #ebebeb;
+  --text-subtle: #a3a3a3;
+  --text-disabled: #5c5c5c;
+  --text-brand: var(--iq-green);
+
+  --border-soft: #333333;
+
+  --action-bg: var(--iq-green);
+  --action-bg-hover: var(--iq-green-bright);
+  --action-text: #171717;
+
+  --focus-ring: var(--iq-green);
+}

@@ -1,0 +1,131 @@
+---
+import Container from './Container.astro';
+import Logo from './Logo.astro';
+import { MAIN_NAV, NEURON_AI_LINKS, PRIVACY_POLICY_URL } from '../consts/links';
+import { ariaCurrent, linkTarget } from '../utils/links';
+
+const { pathname } = Astro.url;
+
+const columns = [
+  { id: 'footer-iq', heading: 'Neuron IQ', links: MAIN_NAV },
+  {
+    id: 'footer-ai',
+    heading: 'Neuron AI',
+    links: [
+      { label: 'Website', href: NEURON_AI_LINKS.website },
+      { label: 'Documentation', href: NEURON_AI_LINKS.docs },
+      { label: 'GitHub', href: NEURON_AI_LINKS.github },
+    ],
+  },
+];
+---
+
+<footer class="footer">
+  <Container>
+    <div class="top">
+      <Logo size="xl" />
+      <div class="columns">
+        {
+          columns.map(({ id, heading, links }) => (
+            <nav aria-labelledby={id}>
+              <h2 class="heading" id={id}>
+                {heading}
+              </h2>
+              <ul class="list">
+                {links.map(({ label, href }) => (
+                  <li>
+                    <a class="link" href={href} aria-current={ariaCurrent(href, pathname)} {...linkTarget(href)}>
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))
+        }
+      </div>
+    </div>
+    <div class="bottom">
+      <a class="link legal" href={PRIVACY_POLICY_URL} {...linkTarget(PRIVACY_POLICY_URL)}>Privacy policy</a>
+    </div>
+  </Container>
+</footer>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  .footer {
+    padding-block: var(--s-64);
+    background: var(--bg-primary);
+
+    @include bp.up(md) {
+      padding-block: var(--s-100) var(--s-64);
+    }
+  }
+
+  .top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-40);
+
+    @include bp.up(md) {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-40);
+
+    @include bp.up(md) {
+      column-gap: var(--s-100);
+    }
+  }
+
+  .heading {
+    margin-bottom: var(--s-8);
+    color: var(--text-strong);
+    font-family: var(--font-pixel);
+    font-size: var(--pixel-m-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--pixel-m-line);
+    text-transform: uppercase;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target-min);
+    color: var(--text-subtle);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--easing-standard);
+
+    &:hover {
+      color: var(--text-strong);
+    }
+  }
+
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-16);
+    margin-top: var(--s-40);
+    padding-top: var(--s-16);
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+  }
+
+  .legal {
+    font-size: var(--body-s-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--body-s-line);
+  }
+</style>

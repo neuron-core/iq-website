@@ -1,0 +1,61 @@
+---
+interface Props {
+  items: string[];
+  /** Hollow squares: the side of a comparison you leave behind */
+  muted?: boolean;
+  /** Rules above the first item and below the last */
+  ruled?: boolean;
+  /** l: items set as small headings */
+  size?: 'm' | 'l';
+}
+
+const { items, muted = false, ruled = false, size = 'm' } = Astro.props;
+---
+
+<ul class:list={['list', { muted, ruled, l: size === 'l' }]}>
+  {items.map((item) => <li>{item}</li>)}
+</ul>
+
+<style lang="scss">
+  .list > li {
+    display: flex;
+    gap: var(--s-12);
+    padding-block: var(--s-12);
+    border-bottom: var(--border-width-hairline) solid var(--border-soft);
+    color: var(--text-primary);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    &::before {
+      content: "";
+      flex: none;
+      width: var(--s-8);
+      height: var(--s-8);
+      margin-top: var(--s-10);
+      background: var(--iq-green);
+    }
+  }
+
+  .muted > li::before {
+    border: var(--border-width-hairline) solid var(--text-subtle);
+    background: transparent;
+  }
+
+  .ruled {
+    border-top: var(--border-width-hairline) solid var(--border-soft);
+
+    > li:last-child {
+      border-bottom: var(--border-width-hairline) solid var(--border-soft);
+    }
+  }
+
+  .l > li {
+    padding-block: var(--s-16);
+    color: var(--text-strong);
+    font-size: var(--heading-xs-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-xs-line);
+  }
+</style>

@@ -1,0 +1,17 @@
+/* Neuron IQ: motion. Hover and focus changes, plus the control tower scene
+   on the Neuron IQ Premium page. Everything stops for prefers-reduced-motion. */
+
+:root {
+  --duration-none: 0s;
+  --duration-fast: 150ms;
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Control tower scene */
+  --duration-cycle: 12s;      /* one alert: stall, assistance, back on course */
+  --duration-blink: 1s;       /* tower beacon */
+  --duration-sweep: 4s;       /* radar line across the airspace */
+  --duration-flight-s: 5s;
+  --duration-flight-m: 6s;
+  --duration-flight-l: 8s;
+  --duration-lag: 0.4s;       /* second technician follows the first */
+}

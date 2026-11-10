@@ -1,0 +1,51 @@
+---
+interface Props {
+  as?: 'div' | 'li' | 'article';
+  /** A strong rule on top: brand green, or ink */
+  accent?: 'green' | 'ink';
+  /** A pale green ground instead of the border */
+  brand?: boolean;
+  /** The space between the card's parts */
+  gap?: 'm' | 'l';
+  class?: string;
+}
+
+const { as: Tag = 'div', accent, brand = false, gap = 'm', class: className } = Astro.props;
+---
+
+<Tag class:list={['card', accent && `accent-${accent}`, { brand, 'gap-l': gap === 'l' }, className]}><slot /></Tag>
+
+<style lang="scss">
+  @use "../styles/variables/breakpoints" as bp;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-16);
+    padding: var(--s-24);
+    border: var(--border-width-hairline) solid var(--border-soft);
+    border-radius: var(--r-0);
+    background: var(--bg-primary);
+
+    @include bp.up(sm) {
+      padding: var(--s-28);
+    }
+  }
+
+  .gap-l {
+    gap: var(--s-24);
+  }
+
+  .brand {
+    border-color: transparent;
+    background: var(--bg-brand-weak);
+  }
+
+  .accent-green {
+    border-top: var(--border-width-strong) solid var(--iq-green);
+  }
+
+  .accent-ink {
+    border-top: var(--border-width-strong) solid var(--text-strong);
+  }
+</style>

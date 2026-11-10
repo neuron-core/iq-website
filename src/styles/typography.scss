@@ -1,0 +1,84 @@
+// Neuron IQ: type helpers, named after the design system's text styles.
+// Global on purpose: every component and page sets text with these classes.
+
+@use "variables/breakpoints" as bp;
+
+.title-xl,
+.title-l,
+.title-m,
+.title-s,
+.title-xs {
+  color: var(--text-strong);
+  font-weight: var(--font-weight-medium);
+}
+
+.title-xl {
+  font-size: var(--heading-l-size);
+  line-height: var(--heading-xl-line);
+
+  @include bp.up(sm) {
+    font-size: var(--heading-xl-size);
+  }
+}
+
+.title-l {
+  font-size: var(--heading-m-size);
+  line-height: var(--heading-m-line);
+
+  @include bp.up(sm) {
+    font-size: var(--heading-l-size);
+    line-height: var(--heading-l-line);
+  }
+}
+
+.title-m {
+  font-size: var(--heading-s-size);
+  line-height: var(--heading-s-line);
+
+  @include bp.up(sm) {
+    font-size: var(--heading-m-size);
+    line-height: var(--heading-m-line);
+  }
+}
+
+.title-s {
+  font-size: var(--heading-s-size);
+  line-height: var(--heading-s-line);
+}
+
+.title-xs {
+  font-size: var(--heading-xs-size);
+  line-height: var(--heading-xs-line);
+}
+
+.text-lead {
+  color: var(--text-subtle);
+  font-size: var(--paragraph-l-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--paragraph-l-line);
+}
+
+.text-body {
+  color: var(--text-primary);
+  font-size: var(--paragraph-m-size);
+  line-height: var(--paragraph-m-line);
+}
+
+.text-strong {
+  color: var(--text-strong);
+  font-weight: var(--font-weight-medium);
+}
+
+.text-subtle {
+  color: var(--text-subtle);
+}
+
+.eyebrow {
+  color: var(--text-brand);
+  font-family: var(--font-pixel);
+  font-size: var(--pixel-m-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--pixel-m-line);
+  letter-spacing: var(--pixel-m-tracking);
+  text-transform: uppercase;
+}
