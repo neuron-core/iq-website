@@ -17,8 +17,8 @@ interface Props {
   id?: string;
 }
 
-// Slots: the default slot takes the buttons. The `visual` slot replaces the
-// pixel mark, and is shown on phones too.
+// Slots: the default slot takes the buttons, and `below-buttons` what follows
+// them. The `visual` slot replaces the pixel mark, and is shown on phones too.
 const { title, lead, badge, level = 1, dark = false, id } = Astro.props;
 const Heading = level === 1 ? 'h1' : 'h2';
 const titleId = `${id ?? slugify(title)}-title`;
@@ -41,6 +41,7 @@ const hasVisual = Astro.slots.has('visual');
       }
       {lead && <p class="text-lead lead">{lead}</p>}
       <ButtonRow class="actions"><slot /></ButtonRow>
+      <slot name="below-buttons" />
     </div>
     {
       hasVisual ? (

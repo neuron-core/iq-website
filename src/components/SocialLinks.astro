@@ -1,0 +1,64 @@
+---
+import LinkedInIcon from '../images/icons/linkedin.svg';
+import InstagramIcon from '../images/icons/instagram.svg';
+import XIcon from '../images/icons/x.svg';
+import { NEURON_AI_SOCIAL } from '../consts/links';
+import { linkTarget } from '../utils/links';
+
+const socials = [
+  { name: 'LinkedIn', href: NEURON_AI_SOCIAL.linkedin, Icon: LinkedInIcon },
+  { name: 'Instagram', href: NEURON_AI_SOCIAL.instagram, Icon: InstagramIcon },
+  { name: 'X', href: NEURON_AI_SOCIAL.x, Icon: XIcon },
+];
+---
+
+<div class="social">
+  <span class="label">Follow us on:</span>
+  <ul class="links">
+    {
+      socials.map(({ name, href, Icon }) => (
+        <li>
+          <a class="link" href={href} aria-label={name} {...linkTarget(href)}>
+            <Icon class="icon" aria-hidden="true" />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style lang="scss">
+  .social {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+  }
+
+  .label {
+    color: var(--text-subtle);
+  }
+
+  .links {
+    display: flex;
+  }
+
+  // The icon is small, the tap area is not
+  .link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--touch-target-min);
+    min-height: var(--touch-target-min);
+    color: var(--text-subtle);
+    transition: color var(--duration-fast) var(--easing-standard);
+
+    &:hover {
+      color: var(--text-strong);
+    }
+  }
+
+  .icon {
+    width: var(--s-20);
+    height: var(--s-20);
+  }
+</style>

@@ -12,6 +12,13 @@ export const NEURON_AI_LINKS = {
   github: 'https://github.com/neuron-core/neuron-ai',
 };
 
+/** Neuron AI's social media pages */
+export const NEURON_AI_SOCIAL = {
+  linkedin: 'https://www.linkedin.com/company/106896704/',
+  instagram: 'https://www.instagram.com/neuronai_php_adk/',
+  x: 'https://x.com/neuronai_php',
+};
+
 export const PAGES = {
   home: '/',
   premium: '/premium/',

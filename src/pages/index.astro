@@ -10,6 +10,7 @@ import Table from '../components/Table.astro';
 import BulletList from '../components/BulletList.astro';
 import Faq from '../components/Faq.astro';
 import ContactCta from '../components/ContactCta.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 import { CONTACT_FORM_URL, NEURON_AI_LINKS, PAGES } from '../consts/links';
 import { NEURON_IQ, NEURON_IQ_PREMIUM } from '../consts/offer';
 import { FAQ } from '../consts/faq';
@@ -142,6 +143,7 @@ const pages = [
   >
     <Button href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
     <Button href={PAGES.solutions} variant="outline" size="xl">Compare the plans</Button>
+    <SocialLinks slot="below-buttons" />
   </PageHero>
 
   <Section tone="band" title={`${capitalize(numberWord(solutions.length))} solutions to build the best Agentic Applications in PHP`}>
