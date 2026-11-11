@@ -13,7 +13,7 @@ export const FAQ = {
     answer: `Yes. The framework is open source under the ${FRAMEWORK.license} license.`,
   },
   whyPay: {
-    question: 'Why pay for Neuron IQ if the framework is open source?',
+    question: 'What are the advantages of Neuron IQ if the framework is open source?',
     answer: 'You pay for getting advanced extensions, direct support from the team that created Neuron, priority on your bugs, and help when you upgrade or make important decisions.',
   },
   securityPatches: {

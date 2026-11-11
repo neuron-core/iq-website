@@ -13,6 +13,7 @@ import ContactCta from '../components/ContactCta.astro';
 import { CONTACT_FORM_URL, PAGES } from '../consts/links';
 import { FRAMEWORK } from '../consts/framework';
 import {
+  CERTIFICATIONS,
   CONSOLE_FEATURES,
   CONSULTING_ROLES,
   FLY_PACKAGES,
@@ -53,7 +54,26 @@ const plans = {
   cta: { label: 'Talk to us', href: CONTACT_FORM_URL },
 };
 
-const appLimits = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${limit}`), 'unlimited'], 'or');
+const roles = CONSULTING_ROLES.map((text) => ({ text, detail: 'From our team of professionals' }));
+
+// Training and certification: a section each, with the problem it solves and its two levels
+const paths = [
+  {
+    id: 'training',
+    title: 'Training',
+    lead: 'Agents are new ground for most PHP teams, and learning them by trial and error means mistakes that show up in production. Get your team building with Neuron the right way, taught by the people who created it.',
+    levels: TRAINING,
+  },
+  {
+    id: 'certification',
+    title: 'Certification',
+    tone: 'band' as const,
+    lead: 'Knowing Neuron is hard to prove, to a client, an employer or your own team. A certification from the team that created Neuron makes it official, from using the framework to designing architectures with it.',
+    levels: CERTIFICATIONS,
+  },
+];
+
+const appLimits =formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${limit}`), 'unlimited'], 'or');
 ---
 
 <BaseLayout
@@ -74,7 +94,7 @@ const appLimits = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${lim
       <Card as="article" accent="brand" gap="l">
         <h3 class="title-s">Neuron IQ</h3>
         <p class="text-body">Annual subscription, sized on the applications you have in production: {appLimits}.</p>
-        <p class="includes">Includes {flyPackage(NEURON_IQ.consultingHours)}.</p>
+        <p class="includes"><a href="#consultancy">Includes {flyPackage(NEURON_IQ.consultingHours)}.</a></p>
       </Card>
       <Card as="article" accent="brand" product="premium" gap="l">
         <div class="title-row">
@@ -82,7 +102,7 @@ const appLimits = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${lim
           <Badge>Coming soon</Badge>
         </div>
         <p class="text-body">Annual subscription, as {formatList(NEURON_IQ_PREMIUM.deployments, 'or')}.</p>
-        <p class="includes">Includes {flyPackage(NEURON_IQ_PREMIUM.consultingHours)}.</p>
+        <p class="includes"><a href="#consultancy">Includes {flyPackage(NEURON_IQ_PREMIUM.consultingHours)}.</a></p>
         <MoreLink href={PAGES.premium} class="card-link">Explore Neuron IQ Premium</MoreLink>
       </Card>
     </CardGrid>
@@ -95,7 +115,7 @@ const appLimits = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${lim
     lead="Work directly with the team that created Neuron."
   >
     <div class="consult">
-      <BulletList items={CONSULTING_ROLES} size="l" ruled />
+      <BulletList items={roles} size="l" ruled />
       <div class="consult-packages">
         <h3 class="title-m">Fly with Neuron support packages</h3>
         <p class="text-body">
@@ -117,18 +137,21 @@ const appLimits = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${lim
     </div>
   </Section>
 
-  <Section id="training" title="Training and certification">
-    <ul class="ledger">
-      {
-        TRAINING.map(({ name, detail }) => (
-          <li>
-            <span class="ledger-name">{name}</span>
-            {detail && <span class="ledger-detail">{detail}</span>}
-          </li>
-        ))
-      }
-    </ul>
-  </Section>
+  {
+    paths.map(({ id, title, tone, lead, levels }) => (
+      <Section id={id} tone={tone} title={title} lead={lead}>
+        <ol class="ledger">
+          {levels.map(({ name, detail }, index) => (
+            <li>
+              <span class="eyebrow ledger-level">Level {index + 1}</span>
+              <span class="ledger-name">{name}</span>
+              {detail && <span class="ledger-detail">{detail}</span>}
+            </li>
+          ))}
+        </ol>
+      </Section>
+    ))
+  }
 
   <ContactCta />
 </BaseLayout>
@@ -158,6 +181,15 @@ const appLimits = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${lim
     border-top: var(--border-width-hairline) solid var(--border-soft);
     color: var(--text-brand);
     font-weight: var(--font-weight-medium);
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   .card-link {
@@ -212,18 +244,20 @@ const appLimits = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${lim
     line-height: var(--heading-m-line);
   }
 
-  // Training and certification: a name and its detail on one ruled line
+  // Training and certification: each level, its name and its detail on one ruled line
   .ledger {
     border-top: var(--border-width-hairline) solid var(--border-soft);
 
     > li {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: var(--s-4) var(--s-16);
+      display: grid;
+      gap: var(--s-8) var(--s-16);
       padding-block: var(--s-24);
       border-bottom: var(--border-width-hairline) solid var(--border-soft);
+
+      @include bp.up(sm) {
+        grid-template-columns: var(--s-100) minmax(0, 1fr) auto;
+        align-items: baseline;
+      }
     }
   }
 

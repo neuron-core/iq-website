@@ -8,8 +8,7 @@ import Card from '../components/Card.astro';
 import BulletList from '../components/BulletList.astro';
 import Button from '../components/Button.astro';
 import ButtonRow from '../components/ButtonRow.astro';
-import MoreLink from '../components/MoreLink.astro';
-import { NEURON_AI_LINKS, PAGES, PARTNER_FORM_URL } from '../consts/links';
+import { CONTACT_FORM_URL, NEURON_AI_LINKS, PARTNER_FORM_URL } from '../consts/links';
 import { FRAMEWORK } from '../consts/framework';
 import { PARTNER_TIERS } from '../consts/partners';
 import { capitalize, compactNumber, formatList, numberWord } from '../utils/format';
@@ -65,14 +64,13 @@ const reasons = ['Bring value to your existing customers', 'Acquire new customer
   description={`Advise and consult on the strategic use and implementation of Neuron AI to accelerate business outcomes at scale. ${formatList(tierNames)} partnership levels.`}
 >
   <PageHero title="Neuron Partner Network" lead="The future is not predicted, it is prepared for.">
-    <Button href={PARTNER_FORM_URL} size="xl">Become a partner</Button>
-    <Button href="#levels" variant="outline" size="xl">Partnership levels</Button>
+    <Button href="#levels" size="xl">Become a partner</Button>
   </PageHero>
 
   <Section
     tone="band"
-    title="The PHP opportunity"
-    lead="PHP developers who want to build agentic apps had no real choice: leave PHP, or sit it out."
+    title="The PHP opportunity and Neuron IQ opportunity"
+    lead="PHP developers who want to build agentic apps had no real choice: leave PHP, or sit it out. Partnering with Neuron IQ brings you value, expertise, and opportunities."
   >
     <blockquote class="quote"><p>“Losing years of PHP knowledge and skills is not an option.”</p></blockquote>
     <Subsection title="Before Neuron, building an AI agent meant leaving PHP">
@@ -173,7 +171,9 @@ const reasons = ['Bring value to your existing customers', 'Acquire new customer
         ))
       }
     </CardGrid>
-    <p class="tiers-note"><MoreLink href={PAGES.solutions}>See training and certification</MoreLink></p>
+    <div class="tiers-cta">
+      <Button href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
+    </div>
     <Card as="article" class="referral">
       <div class="referral-grid">
         <h3 class="title-s referral-title">Referral Partner</h3>
@@ -388,8 +388,11 @@ const reasons = ['Bring value to your existing customers', 'Acquire new customer
     }
   }
 
-  .tiers-note {
-    margin-top: var(--s-16);
+  // Centered under the levels
+  .tiers-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--s-32);
   }
 
   .referral {

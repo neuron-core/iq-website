@@ -1,6 +1,9 @@
 ---
+/** A plain line, or a line with a muted detail on its right */
+export type BulletItem = string | { text: string; detail: string };
+
 interface Props {
-  items: string[];
+  items: BulletItem[];
   /** Hollow squares: the side of a comparison you leave behind */
   muted?: boolean;
   /** Rules above the first item and below the last */
@@ -13,7 +16,20 @@ const { items, muted = false, ruled = false, size = 'm' } = Astro.props;
 ---
 
 <ul class:list={['list', { muted, ruled, l: size === 'l' }]}>
-  {items.map((item) => <li>{item}</li>)}
+  {
+    items.map((item) =>
+      typeof item === 'string' ? (
+        <li>{item}</li>
+      ) : (
+        <li>
+          <span class="line">
+            <span>{item.text}</span>
+            <span class="detail">{item.detail}</span>
+          </span>
+        </li>
+      ),
+    )
+  }
 </ul>
 
 <style lang="scss">
@@ -57,5 +73,27 @@ const { items, muted = false, ruled = false, size = 'm' } = Astro.props;
     font-size: var(--heading-xs-size);
     font-weight: var(--font-weight-medium);
     line-height: var(--heading-xs-line);
+  }
+
+  // The text and its detail share the line, and the detail wraps under the text when narrow
+  .line {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-4) var(--s-16);
+  }
+
+  .detail {
+    color: var(--text-subtle);
+    font-size: var(--paragraph-m-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--paragraph-m-line);
+  }
+
+  .l .detail {
+    font-size: var(--paragraph-l-size);
+    line-height: var(--paragraph-l-line);
   }
 </style>

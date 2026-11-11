@@ -3,6 +3,7 @@ import Container from './Container.astro';
 import Logo from './Logo.astro';
 import SocialLinks from './SocialLinks.astro';
 import { MAIN_NAV, NEURON_AI_LINKS, PRIVACY_POLICY_URL } from '../consts/links';
+import { COMPANY_ADDRESS, TRADEMARK_NOTICE } from '../consts/site';
 import { ariaCurrent, linkTarget } from '../utils/links';
 
 const { pathname } = Astro.url;
@@ -11,7 +12,7 @@ const columns = [
   { id: 'footer-iq', heading: 'Neuron IQ', links: MAIN_NAV },
   {
     id: 'footer-ai',
-    heading: 'Neuron AI',
+    heading: 'Neuron AI Community',
     links: [
       { label: 'Website', href: NEURON_AI_LINKS.website },
       { label: 'Documentation', href: NEURON_AI_LINKS.docs },
@@ -53,7 +54,12 @@ const columns = [
       </div>
     </div>
     <div class="bottom">
-      <a class="link legal" href={PRIVACY_POLICY_URL} {...linkTarget(PRIVACY_POLICY_URL)}>Privacy policy</a>
+      <div class="legal-start">
+        <a class="link legal" href={PRIVACY_POLICY_URL} {...linkTarget(PRIVACY_POLICY_URL)}>Privacy policy</a>
+        <span class="legal company dot" aria-hidden="true">·</span>
+        <p class="legal company">{TRADEMARK_NOTICE}</p>
+      </div>
+      <address class="legal company">{COMPANY_ADDRESS}</address>
     </div>
   </Container>
 </footer>
@@ -135,8 +141,9 @@ const columns = [
   .bottom {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
-    gap: var(--s-16);
+    gap: var(--s-8) var(--s-16);
     margin-top: var(--s-40);
     padding-top: var(--s-16);
     border-top: var(--border-width-hairline) solid var(--border-soft);
@@ -146,5 +153,32 @@ const columns = [
     font-size: var(--body-s-size);
     font-weight: var(--font-weight-medium);
     line-height: var(--body-s-line);
+  }
+
+  // The privacy policy link and the trademark notice: stacked on phones,
+  // then side by side with a middle dot between them
+  .legal-start {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    @include bp.up(sm) {
+      flex-direction: row;
+      align-items: center;
+      column-gap: var(--s-12);
+    }
+  }
+
+  .dot {
+    display: none;
+
+    @include bp.up(sm) {
+      display: inline;
+    }
+  }
+
+  .company {
+    color: var(--text-subtle);
+    font-style: normal;
   }
 </style>

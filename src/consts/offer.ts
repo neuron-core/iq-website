@@ -31,9 +31,18 @@ export const CONSOLE_FEATURES = [
 
 export const CONSULTING_ROLES = ['Certified Senior Software Engineer', 'Certified Software Architect'];
 
-export const TRAINING = [
+/** One level of the training or certification path, first level first */
+export interface Level {
+  name: string;
+  detail?: string;
+}
+
+export const TRAINING: Level[] = [
   { name: 'Kick Off with Neuron AI', detail: '8 hours in two sessions' },
   { name: 'Expert on Neuron AI', detail: '2 days, with samples and classroom' },
+];
+
+export const CERTIFICATIONS: Level[] = [
   { name: 'Use Neuron AI Certification' },
   { name: 'Architectural Projects with Neuron Certification' },
 ];
