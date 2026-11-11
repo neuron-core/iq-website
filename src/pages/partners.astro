@@ -8,7 +8,7 @@ import Card from '../components/Card.astro';
 import BulletList from '../components/BulletList.astro';
 import Button from '../components/Button.astro';
 import ButtonRow from '../components/ButtonRow.astro';
-import { CONTACT_FORM_URL, NEURON_AI_LINKS, PARTNER_FORM_URL } from '../consts/links';
+import { NEURON_AI_LINKS, PARTNER_FORM_URL } from '../consts/links';
 import { FRAMEWORK } from '../consts/framework';
 import { PARTNER_TIERS } from '../consts/partners';
 import { capitalize, compactNumber, formatList, numberWord } from '../utils/format';
@@ -172,7 +172,7 @@ const reasons = ['Bring value to your existing customers', 'Acquire new customer
       }
     </CardGrid>
     <div class="tiers-cta">
-      <Button href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
+      <Button href={PARTNER_FORM_URL} size="xl">Talk to us</Button>
     </div>
     <Card as="article" class="referral">
       <div class="referral-grid">
