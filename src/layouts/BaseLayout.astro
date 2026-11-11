@@ -8,9 +8,11 @@ import { SITE_NAME, SOCIAL_IMAGE } from '../consts/site';
 interface Props {
   title: string;
   description: string;
+  /** A product page: its accents take the product's color. Header and footer stay Neuron IQ. */
+  product?: 'premium';
 }
 
-const { title, description } = Astro.props;
+const { title, description, product } = Astro.props;
 
 // Social cards need full URLs, built on the `site` set in astro.config.mjs
 const pageUrl = new URL(Astro.url.pathname, Astro.site);
@@ -41,7 +43,7 @@ const imageUrl = new URL(SOCIAL_IMAGE.path, Astro.site);
   <body>
     <div class="site">
       <Header />
-      <main>
+      <main data-product={product}>
         <slot />
       </main>
       <Footer />

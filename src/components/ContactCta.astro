@@ -2,12 +2,20 @@
 import PageHero from './PageHero.astro';
 import Button from './Button.astro';
 import { CONTACT_FORM_URL } from '../consts/links';
+
+interface Props {
+  /** On a product page, the block carries that product's pixel mark */
+  product?: 'premium';
+}
+
+const { product } = Astro.props;
 ---
 
 <PageHero
   id="contact"
   level={2}
   dark
+  product={product}
   title="Build with Neuron. Go to production with the team that created it."
   lead="Tell us where your project stands."
 >

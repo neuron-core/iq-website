@@ -32,7 +32,7 @@ const journey = [
     text: 'The technicians who know your plane better than anyone, by your side, with the priority you need.',
   },
   {
-    node: 'ink',
+    node: 'blue',
     product: 'Neuron IQ Premium',
     badge: 'Coming soon',
     name: 'The control tower',
@@ -119,16 +119,19 @@ const ways = [
     ],
   },
 ];
+
+const title = 'Neuron IQ Premium: know what your agents do in production, and what they cost';
 ---
 
 <BaseLayout
-  title="Neuron IQ Premium: the enterprise platform that delivers value"
+  product="premium"
+  title={title}
   description={`The ready-to-use platform to run, monitor and improve your PHP AI agents, as ${formatList(deployments, 'or')}.`}
 >
   <PageHero
     dark
     badge="Coming soon"
-    title="Neuron IQ Premium: the enterprise platform that delivers value"
+    title={title}
     lead="The ready-to-use platform to run, monitor and improve your agents."
   >
     <Button href={CONTACT_FORM_URL} size="xl">Talk to us</Button>
@@ -200,7 +203,7 @@ const ways = [
     <CardGrid columns={2}>
       {
         ways.map(({ name, points }) => (
-          <Card as="article" accent="green">
+          <Card as="article" accent="brand">
             <h3 class="title-s">{name}</h3>
             <BulletList items={points} />
           </Card>
@@ -220,7 +223,7 @@ const ways = [
     <Button href={CONTACT_FORM_URL} size="xl">{reserveSpot}</Button>
   </Faq>
 
-  <ContactCta />
+  <ContactCta product="premium" />
 </BaseLayout>
 
 <style lang="scss">
@@ -259,13 +262,15 @@ const ways = [
     background: var(--bg-primary);
   }
 
-  .node-ink {
-    background: var(--text-strong);
-  }
-
+  // Each product in its own color, whatever the page
   .node-green {
     border-color: var(--iq-green);
     background: var(--iq-green);
+  }
+
+  .node-blue {
+    border-color: var(--iq-blue);
+    background: var(--iq-blue);
   }
 
   .product {
@@ -326,7 +331,7 @@ const ways = [
     width: var(--s-8);
     height: var(--s-8);
     margin-bottom: var(--s-16);
-    background: var(--iq-green);
+    background: var(--brand);
   }
 
   .console-name {
@@ -363,7 +368,7 @@ const ways = [
       width: var(--s-8);
       height: var(--s-8);
       margin-top: var(--s-10);
-      background: var(--iq-green);
+      background: var(--brand);
     }
   }
 

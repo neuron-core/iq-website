@@ -33,7 +33,7 @@ const plans = {
   columns: [
     { label: 'Neuron AI' },
     { label: 'Neuron IQ', highlight: true, cta: true },
-    { label: 'Neuron IQ Premium', badge: 'Coming soon', cta: true },
+    { label: 'Neuron IQ Premium', badge: 'Coming soon', cta: true, product: 'premium' as const },
   ],
   rows: [
     { label: `Open source framework (${FRAMEWORK.license}) and community`, cells: [yes, yes, yes] },
@@ -71,12 +71,12 @@ const appLimits = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${lim
   <Section id="compare" tone="band" title="The answer to every need">
     <Table matrix {...plans} />
     <CardGrid columns={2} class="offers">
-      <Card as="article" accent="green" gap="l">
+      <Card as="article" accent="brand" gap="l">
         <h3 class="title-s">Neuron IQ</h3>
         <p class="text-body">Annual subscription, sized on the applications you have in production: {appLimits}.</p>
         <p class="includes">Includes {flyPackage(NEURON_IQ.consultingHours)}.</p>
       </Card>
-      <Card as="article" accent="green" gap="l">
+      <Card as="article" accent="brand" product="premium" gap="l">
         <div class="title-row">
           <h3 class="title-s">Neuron IQ Premium</h3>
           <Badge>Coming soon</Badge>

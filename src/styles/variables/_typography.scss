@@ -8,9 +8,11 @@
   --font-sans: "Inter", sans-serif;
   --font-pixel: "GeistPixel", sans-serif;
 
-  /* 400 loads Inter-Light.ttf, 500 loads Inter-Regular.ttf, matching Neuron AI */
+  /* 400 loads Inter-Light.ttf, 500 loads Inter-Regular.ttf, matching Neuron AI.
+     600 loads Inter-Medium.ttf, one step up the same way: the header navigation. */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
+  --font-weight-semibold: 600;
 
   /* Headings: Inter 500 */
   --heading-xl-size: 5.6rem;

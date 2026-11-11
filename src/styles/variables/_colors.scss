@@ -1,6 +1,8 @@
 /* Neuron IQ: color tokens (Neuron IQ design system, tokens v1).
    The page is light. A highlighted section sets data-theme="dark" and every
-   semantic token below flips to Neuron AI's dark palette. */
+   semantic token below flips to Neuron AI's dark palette.
+   Two axes: the theme (light or dark) picks a step, the product (Neuron IQ
+   green or Neuron IQ Premium blue) picks the hue. */
 
 :root {
   /* Brand green: identical in both themes. Inside the CMYK gamut, so it prints
@@ -10,6 +12,14 @@
   --iq-green-bright: #1db863; /* hover of the green button on dark */
   --iq-green-tint: #e6f4ec;   /* pale green surface on white */
   --iq-green-night: #0f2e1e;  /* deep green surface on dark */
+
+  /* Neuron IQ Premium blue: marks Premium only, its calls to action included.
+     Confirm the Pantone match with a printed proof. */
+  --iq-blue: #0076cc;         /* Premium accents and fills (4.71:1 on white, 3.81:1 on #171717) */
+  --iq-blue-deep: #005ea8;    /* blue text and links on white (6.63:1) */
+  --iq-blue-bright: #3d94e0;  /* blue text and hover on dark (5.56:1 on #171717) */
+  --iq-blue-tint: #e6f0fa;    /* pale blue surface on white */
+  --iq-blue-night: #0e2236;   /* deep blue surface on dark */
 
   /* Neuron AI framework mark only: never Neuron IQ UI colors */
   --neuron-pink: #ff42e9;
@@ -23,10 +33,37 @@
 
   /* The main call to action, "Talk to us": the same green block on every
      ground, ink label (5.6:1). No other element on the page is a green fill
-     this size, so the eye always finds it. */
+     this size, so the eye always finds it. Inside a Premium scope it turns
+     blue (see [data-product="premium"] below). */
   --cta-bg: var(--iq-green);
   --cta-bg-hover: var(--iq-green-bright);
   --cta-text: var(--iq-ink);
+}
+
+/* The product hue. Neuron IQ is green; a data-product="premium" scope (the
+   Premium page, and Premium's cards, columns and links elsewhere) turns it
+   blue. `--brand` fills squares, rules and bullets in both themes; the steps
+   below feed the semantic brand tokens. */
+:root {
+  --brand: var(--iq-green);
+  --brand-text-on-light: var(--iq-green-deep);
+  --brand-text-on-dark: var(--iq-green);
+  --brand-surface-light: var(--iq-green-tint);
+  --brand-surface-dark: var(--iq-green-night);
+}
+
+[data-product="premium"] {
+  --brand: var(--iq-blue);
+  --brand-text-on-light: var(--iq-blue-deep);
+  --brand-text-on-dark: var(--iq-blue-bright);
+  --brand-surface-light: var(--iq-blue-tint);
+  --brand-surface-dark: var(--iq-blue-night);
+
+  /* Blue call to action on every ground. Ink on blue fails AA, so the label
+     is white (4.71:1), and hover darkens (6.63:1) where green brightens. */
+  --cta-bg: var(--iq-blue);
+  --cta-bg-hover: var(--iq-blue-deep);
+  --cta-text: #ffffff;
 }
 
 :root,
@@ -34,40 +71,49 @@
   --bg-primary: #ffffff;
   --bg-weak: #f7f7f7;
   --bg-soft: #ebebeb;
-  --bg-brand-weak: var(--iq-green-tint);
 
   --text-strong: #171717;
   --text-primary: #262626;
   --text-subtle: #5c5c5c;
   --text-disabled: #a3a3a3;
-  --text-brand: var(--iq-green-deep);
 
   --border-soft: #ebebeb;
 
   --action-bg: #171717;
   --action-bg-hover: #333333;
   --action-text: #ffffff;
-
-  --focus-ring: var(--iq-green-deep);
 }
 
 [data-theme="dark"] {
   --bg-primary: #171717;
   --bg-weak: #1c1c1c;
   --bg-soft: #262626;
-  --bg-brand-weak: var(--iq-green-night);
 
   --text-strong: #f7f7f7;
   --text-primary: #ebebeb;
   --text-subtle: #a3a3a3;
   --text-disabled: #5c5c5c;
-  --text-brand: var(--iq-green);
 
   --border-soft: #333333;
 
   --action-bg: var(--iq-green);
   --action-bg-hover: var(--iq-green-bright);
   --action-text: #171717;
+}
 
-  --focus-ring: var(--iq-green);
+/* The brand tokens: declared again wherever the theme or the product changes,
+   so they always resolve against the hue in scope. */
+:root,
+[data-theme="light"],
+[data-product] {
+  --bg-brand-weak: var(--brand-surface-light);
+  --text-brand: var(--brand-text-on-light);
+  --focus-ring: var(--brand-text-on-light);
+}
+
+[data-theme="dark"],
+[data-theme="dark"] [data-product] {
+  --bg-brand-weak: var(--brand-surface-dark);
+  --text-brand: var(--brand-text-on-dark);
+  --focus-ring: var(--brand-text-on-dark);
 }

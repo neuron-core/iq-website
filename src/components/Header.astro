@@ -14,9 +14,9 @@ const { pathname } = Astro.url;
     <nav class="nav" aria-label="Main">
       <ul class="nav-list">
         {
-          MAIN_NAV.map(({ label, href }) => (
+          MAIN_NAV.map(({ label, href, product }) => (
             <li>
-              <a class="nav-link" href={href} aria-current={ariaCurrent(href, pathname)}>
+              <a class="nav-link" href={href} aria-current={ariaCurrent(href, pathname)} data-product={product}>
                 {label}
               </a>
             </li>
@@ -31,9 +31,9 @@ const { pathname } = Astro.url;
         <nav class="panel" aria-label="Main, mobile">
           <ul>
             {
-              MAIN_NAV.map(({ label, href }) => (
+              MAIN_NAV.map(({ label, href, product }) => (
                 <li>
-                  <a class="menu-link" href={href} aria-current={ariaCurrent(href, pathname)}>
+                  <a class="menu-link" href={href} aria-current={ariaCurrent(href, pathname)} data-product={product}>
                     {label}
                   </a>
                 </li>
@@ -95,9 +95,9 @@ const { pathname } = Astro.url;
   }
 
   .nav-link {
-    color: var(--text-subtle);
+    color: var(--text-primary);
     font-size: var(--paragraph-m-size);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
     line-height: var(--paragraph-m-line);
     text-decoration: none;
     transition: color var(--duration-fast) var(--easing-standard);
@@ -110,9 +110,25 @@ const { pathname } = Astro.url;
     &[aria-current="page"] {
       color: var(--text-strong);
       text-decoration: underline;
-      text-decoration-color: var(--iq-green);
+      text-decoration-color: var(--brand);
       text-decoration-thickness: var(--border-width-strong);
       text-underline-offset: var(--s-8);
+    }
+
+    // Neuron IQ Premium stands out in its blue, on every page
+    &[data-product] {
+      color: var(--text-brand);
+      text-decoration-color: var(--brand);
+      text-decoration-thickness: var(--border-width-hairline);
+      text-underline-offset: var(--s-8);
+
+      &:hover {
+        text-decoration-line: underline;
+      }
+
+      &[aria-current="page"] {
+        text-decoration-thickness: var(--border-width-strong);
+      }
     }
   }
 
@@ -174,7 +190,8 @@ const { pathname } = Astro.url;
     line-height: var(--heading-xs-line);
     text-decoration: none;
 
-    &[aria-current="page"] {
+    &[aria-current="page"],
+    &[data-product] {
       color: var(--text-brand);
     }
   }

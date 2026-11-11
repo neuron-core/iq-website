@@ -26,9 +26,9 @@ export const PAGES = {
   partners: '/partners/',
 };
 
-/** Header and footer navigation */
-export const MAIN_NAV = [
-  { label: 'Neuron IQ Premium', href: PAGES.premium },
+/** Header and footer navigation. `product` gives an item its product's color in the header. */
+export const MAIN_NAV: { label: string; href: string; product?: 'premium' }[] = [
+  { label: 'Neuron IQ Premium', href: PAGES.premium, product: 'premium' },
   { label: 'Solutions', href: PAGES.solutions },
   { label: 'Partner Network', href: PAGES.partners },
   { label: 'FAQ', href: `${PAGES.home}#faq` },

@@ -12,6 +12,8 @@ interface Column {
   gain?: boolean;
   /** Puts the table's call to action under this column, from breakpoint-md */
   cta?: boolean;
+  /** A Neuron IQ Premium column: its accents turn Premium blue */
+  product?: 'premium';
 }
 
 /** Text, or a "Yes" / "No" with an optional badge */
@@ -37,7 +39,7 @@ const { corner, columns, rows, matrix = false, cta } = Astro.props;
       {corner ? <th scope="col">{corner}</th> : <td />}
       {
         columns.map((column) => (
-          <th scope="col" class:list={{ highlight: column.highlight }}>
+          <th scope="col" class:list={{ highlight: column.highlight }} data-product={column.product}>
             {column.badge ? (
               <span class="value">
                 {column.label}
@@ -60,6 +62,7 @@ const { corner, columns, rows, matrix = false, cta } = Astro.props;
             <td
               data-label={columns[index].label}
               class:list={{ highlight: columns[index].highlight, gain: columns[index].gain }}
+              data-product={columns[index].product}
             >
               {typeof cell === 'string' ? (
                 matrix ? (
@@ -85,7 +88,7 @@ const { corner, columns, rows, matrix = false, cta } = Astro.props;
         <tr>
           <td />
           {columns.map((column) => (
-            <td class:list={{ highlight: column.highlight }}>
+            <td class:list={{ highlight: column.highlight }} data-product={column.product}>
               {column.cta && (
                 <Button href={cta.href} class="foot-cta">
                   {cta.label}

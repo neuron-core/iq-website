@@ -6,6 +6,10 @@
 // Neuron reach it, the flight gets back on course, and the black box
 // records every step.
 //
+// One accent: everything the platform and the team do (the beacon, the
+// technicians and their beam, the rescued flight, the black box) is the
+// brand color, Neuron IQ Premium blue. Flights are white, the tower grey.
+//
 // Pure CSS, no script. The scene is a 20 x 16 grid of square cells: grid
 // lines and translate steps below are drawing coordinates (one cell = 100%
 // of a pixel's own width). Motion stops for prefers-reduced-motion and the
@@ -21,7 +25,7 @@ const keys = [
 ];
 ---
 
-<figure class="ct">
+<figure class="ct" data-product="premium">
   <div class="scene" aria-hidden="true">
     <span class="px beacon"></span>
     <span class="cabin">{pixels(3).map(() => <span class="px" />)}</span>
@@ -78,7 +82,7 @@ const keys = [
   .beacon {
     grid-column: 2;
     grid-row: 2;
-    background: var(--iq-green);
+    background: var(--brand);
     animation: ct-blink var(--duration-blink) step-end infinite;
   }
 
@@ -215,13 +219,13 @@ const keys = [
       top: 0;
       bottom: 0;
       left: 50%;
-      border-left: var(--border-width-strong) dashed var(--iq-green);
+      border-left: var(--border-width-strong) dashed var(--brand);
     }
   }
 
   .tech {
     grid-row: 12;
-    background: var(--iq-green);
+    background: var(--brand);
     animation: ct-assist var(--duration-cycle) var(--easing-standard) infinite;
   }
 
@@ -261,7 +265,7 @@ const keys = [
     width: auto;
     height: 100%;
     aspect-ratio: 1;
-    background: var(--iq-green);
+    background: var(--brand);
     animation: ct-record var(--duration-cycle) steps(20, jump-none) infinite;
   }
 
@@ -297,7 +301,7 @@ const keys = [
   }
 
   .key-team {
-    background: var(--iq-green);
+    background: var(--brand);
   }
 
   .key-alert {
@@ -306,7 +310,7 @@ const keys = [
 
   .key-log {
     scale: var(--pixel-scale-s);
-    background: var(--iq-green);
+    background: var(--brand);
   }
 
   // ---------- Keyframes ----------
@@ -332,9 +336,9 @@ const keys = [
     0% { translate: 0 0; opacity: 0; background: var(--text-strong); }
     4% { opacity: 1; }
     25%, 58% { translate: 600% 0; background: var(--text-strong); }
-    60% { translate: 600% 0; background: var(--iq-green); }
+    60% { translate: 600% 0; background: var(--brand); }
     86% { translate: 1400% 0; opacity: 1; }
-    92%, 100% { translate: 1400% 0; opacity: 0; background: var(--iq-green); }
+    92%, 100% { translate: 1400% 0; opacity: 0; background: var(--brand); }
   }
 
   @keyframes ct-alert {
@@ -377,7 +381,7 @@ const keys = [
 
     .lane-4 .flight {
       translate: 600% 0;
-      background: var(--iq-green);
+      background: var(--brand);
     }
 
     .tech {

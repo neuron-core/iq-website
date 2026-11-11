@@ -10,6 +10,8 @@
 .title-xs {
   color: var(--text-strong);
   font-weight: var(--font-weight-medium);
+  // Even line lengths, so a title never ends on a single word
+  text-wrap: balance;
 }
 
 .title-xl {

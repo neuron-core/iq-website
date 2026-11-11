@@ -16,7 +16,15 @@ import { NEURON_IQ, NEURON_IQ_PREMIUM } from '../consts/offer';
 import { FAQ } from '../consts/faq';
 import { capitalize, formatList, numberWord } from '../utils/format';
 
-const solutions = [
+/** A card that leads to a product or a page; `product` gives a Premium card its blue */
+interface LinkCard {
+  name: string;
+  accent: 'brand' | 'ink';
+  product?: 'premium';
+  link: { label: string; href: string };
+}
+
+const solutions: (LinkCard & { question: string; answer: string })[] = [
   {
     name: 'Neuron AI Framework',
     accent: 'ink',
@@ -27,7 +35,7 @@ const solutions = [
   },
   {
     name: 'Neuron IQ',
-    accent: 'green',
+    accent: 'brand',
     question: '“Who answer my issues and support the team?”',
     answer:
       'The license that includes advanced packages like Subagents and IQ Streaming Server with priority fixes and direct support from the team that created it.',
@@ -35,12 +43,13 @@ const solutions = [
   },
   {
     name: 'Neuron IQ Premium',
-    accent: 'green',
+    accent: 'brand',
+    product: 'premium',
     question: '“Who guarantee my infrastructure going to production?”',
     answer: 'The ready-to-use platform to run, monitor and improve your agents.',
     link: { label: 'Explore Neuron IQ Premium', href: PAGES.premium },
   },
-] as const;
+];
 
 const questions = [
   {
@@ -56,7 +65,7 @@ const questions = [
   {
     question: '“What did the agent do? What does it cost?”',
     answer: 'Continuity under control: one place to see, control and measure.',
-    product: { name: 'Neuron IQ Premium', href: PAGES.premium },
+    product: { name: 'Neuron IQ Premium', href: PAGES.premium, premium: true },
   },
 ];
 
@@ -111,10 +120,11 @@ const included = [
   'The IQ-Server, an hyper efficient relay to stream LLM tokens from application backends to browsers in real-time.'
 ];
 
-const pages = [
+const pages: (LinkCard & { text: string })[] = [
   {
     name: 'Neuron IQ Premium',
-    accent: 'green',
+    accent: 'brand',
+    product: 'premium',
     text: `The ready-to-use platform to run, monitor and improve your agents. Annual subscription, as ${formatList(NEURON_IQ_PREMIUM.deployments, 'or')}.`,
     link: { label: 'Explore Neuron IQ Premium', href: PAGES.premium },
   },
@@ -130,7 +140,7 @@ const pages = [
     text: 'Advise and consult on the strategic use and implementation of Neuron AI to accelerate business outcomes at scale.',
     link: { label: 'Explore the Partner Network', href: PAGES.partners },
   },
-] as const;
+];
 ---
 
 <BaseLayout
@@ -149,8 +159,8 @@ const pages = [
   <Section tone="band" title={`${capitalize(numberWord(solutions.length))} solutions to build the best Agentic Applications in PHP`}>
     <CardGrid as="ul" columns={3}>
       {
-        solutions.map(({ name, accent, question, answer, link }) => (
-          <Card as="li" accent={accent}>
+        solutions.map(({ name, accent, product, question, answer, link }) => (
+          <Card as="li" accent={accent} product={product}>
             <h3 class="title-s">{name}</h3>
             <p class="question">{question}</p>
             <p class="text-subtle">{answer}</p>
@@ -177,7 +187,7 @@ const pages = [
           <li class="qa-row">
             <p class="qa-question">{question}</p>
             <p class="text-subtle qa-answer">{answer}</p>
-            <p class="qa-product">
+            <p class="qa-product" data-product={product.premium ? 'premium' : undefined}>
               <a href={product.href}>{product.name}</a>
             </p>
           </li>
@@ -199,7 +209,7 @@ const pages = [
         <h3 class="title-m">What is included</h3>
         <BulletList items={included} ruled />
       </div>
-      <Card accent="green" gap="l" class="included-aside">
+      <Card accent="brand" gap="l" class="included-aside">
         <p class="text-body">
           <strong class="text-strong">Fly with Neuron:</strong> specialist and advanced consulting packages from the people
           who created Neuron, for any need.
@@ -212,8 +222,8 @@ const pages = [
   <Section title="Explore in detail">
     <CardGrid as="ul" columns={3}>
       {
-        pages.map(({ name, accent, text, link }) => (
-          <Card as="li" accent={accent} gap="l">
+        pages.map(({ name, accent, product, text, link }) => (
+          <Card as="li" accent={accent} product={product} gap="l">
             <h3 class="title-s">{name}</h3>
             <p class="text-body">{text}</p>
             <MoreLink href={link.href} class="card-link">

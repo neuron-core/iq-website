@@ -144,7 +144,7 @@ const reasons = ['Bring value to your existing customers', 'Acquire new customer
     <CardGrid as="ul" columns={3}>
       {
         PARTNER_TIERS.map(({ name, conditions, certified }, index) => (
-          <Card as="li" accent={index === PARTNER_TIERS.length - 1 ? 'green' : 'ink'} gap="l">
+          <Card as="li" accent={index === PARTNER_TIERS.length - 1 ? 'brand' : 'ink'} gap="l">
             <div class="tier-head">
               <h3 class="title-s">{name}</h3>
               <span class="meter" aria-hidden="true">
