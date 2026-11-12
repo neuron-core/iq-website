@@ -2,7 +2,7 @@
 // Built from src/consts, so its facts match the pages.
 
 import type { APIRoute } from 'astro';
-import { CONTACT_FORM_URL, NEURON_AI_LINKS, PAGES, PARTNER_FORM_URL } from '../consts/links';
+import { CONTACT_FORM_URL, NEURON_AI_LINKS, NEURON_IQ_LINKS, PAGES, PARTNER_FORM_URL } from '../consts/links';
 import { FRAMEWORK } from '../consts/framework';
 import { CONSOLE_FEATURES, FLY_PACKAGES, NEURON_IQ, NEURON_IQ_PREMIUM, flyPackage } from '../consts/offer';
 import { PARTNER_TIERS } from '../consts/partners';
@@ -19,7 +19,7 @@ const body = `# Neuron IQ
 
 Neuron AI is the first agentic framework of the PHP ecosystem, open source under the ${FRAMEWORK.license} license. Neuron IQ and Neuron IQ Premium come from the team that created it, and work with Neuron v${FRAMEWORK.version}.
 
-- Neuron IQ: the certified distribution of the framework, with priority fixes, a direct, dedicated channel with the team that created Neuron, ${NEURON_IQ.consultingHours} hours of specialist consulting and Neuron Subagents. Annual subscription, sized on the applications in production: ${appLimits}.
+- Neuron IQ: the certified distribution of the framework, with priority fixes, a direct, dedicated channel with the team that created Neuron, ${NEURON_IQ.consultingHours} hours of specialist consulting and [Neuron Subagents](${NEURON_IQ_LINKS.subagents}). Annual subscription, sized on the applications in production: ${appLimits}.
 - Neuron IQ Premium (coming soon): the ready-to-use platform to run, monitor and improve your agents: ${consoleFeatures}. Annual subscription, as ${deployments}. Includes ${flyPackage(NEURON_IQ_PREMIUM.consultingHours)}.
 - Fly with Neuron: specialist and advanced consulting packages from the people who created Neuron, of ${formatList(FLY_PACKAGES.map(String))} hours.
 

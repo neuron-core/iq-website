@@ -1,6 +1,7 @@
 ---
 import Badge from './Badge.astro';
 import Button from './Button.astro';
+import LinkedText, { type TextWithLinks } from './LinkedText.astro';
 
 interface Column {
   label: string;
@@ -16,14 +17,14 @@ interface Column {
   product?: 'premium';
 }
 
-/** Text, or a "Yes" / "No" with an optional badge */
-export type Cell = string | { yes: boolean; badge?: string };
+/** Text, with optional inline links, or a "Yes" / "No" with an optional badge */
+export type Cell = TextWithLinks | { yes: boolean; badge?: string };
 
 interface Props {
   /** Header of the row labels column. Matrix tables leave it empty. */
   corner?: string;
   columns: Column[];
-  rows: { label: string; cells: Cell[] }[];
+  rows: { label: TextWithLinks; cells: Cell[] }[];
   /** Short values that share a line with their column name on phones */
   matrix?: boolean;
   /** Under the columns marked `cta` on desktop, one full-width button under the table on phones */
@@ -57,24 +58,28 @@ const { corner, columns, rows, matrix = false, cta } = Astro.props;
     {
       rows.map((row) => (
         <tr>
-          <th scope="row">{row.label}</th>
+          <th scope="row">
+            <LinkedText text={row.label} />
+          </th>
           {row.cells.map((cell, index) => (
             <td
               data-label={columns[index].label}
               class:list={{ highlight: columns[index].highlight, gain: columns[index].gain }}
               data-product={columns[index].product}
             >
-              {typeof cell === 'string' ? (
-                matrix ? (
-                  <span class="value">{cell}</span>
-                ) : (
-                  cell
-                )
-              ) : (
+              {typeof cell === 'object' && 'yes' in cell ? (
                 <span class:list={['value', cell.yes ? 'yes' : 'no']}>
                   {cell.yes ? 'Yes' : 'No'}
                   {cell.badge && <Badge brand>{cell.badge}</Badge>}
                 </span>
+              ) : matrix ? (
+                <span class="value">
+                  <span>
+                    <LinkedText text={cell} />
+                  </span>
+                </span>
+              ) : (
+                <LinkedText text={cell} />
               )}
             </td>
           ))}

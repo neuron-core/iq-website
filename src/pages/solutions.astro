@@ -10,7 +10,7 @@ import MoreLink from '../components/MoreLink.astro';
 import Button from '../components/Button.astro';
 import BulletList from '../components/BulletList.astro';
 import ContactCta from '../components/ContactCta.astro';
-import { CONTACT_FORM_URL, PAGES } from '../consts/links';
+import { CONTACT_FORM_URL, NEURON_IQ_LINKS, PAGES } from '../consts/links';
 import { FRAMEWORK } from '../consts/framework';
 import {
   CERTIFICATIONS,
@@ -46,8 +46,11 @@ const plans = {
       label: 'Specialist consulting hours from the creators of Neuron (included)',
       cells: [no, hours(NEURON_IQ.consultingHours), hours(NEURON_IQ_PREMIUM.consultingHours)],
     },
-    { label: 'Neuron Subagents package', cells: [no, yes, yes] },
-    { label: 'IQ Streaming Server', cells: [no, yes, yes] },
+    {
+      label: [{ text: 'Neuron Subagents', href: NEURON_IQ_LINKS.subagents }, ' package'],
+      cells: [no, yes, yes],
+    },
+    { label: [{ text: 'IQ Streaming Server', href: NEURON_IQ_LINKS.stream }], cells: [no, yes, yes] },
     { label: `Console: ${CONSOLE_FEATURES.map((feature) => feature.short).join(', ')}`, cells: [no, no, yes] },
     { label: `Choice between ${formatList(NEURON_IQ_PREMIUM.deployments)}`, cells: [no, no, yes] },
   ],

@@ -12,6 +12,12 @@ export const NEURON_AI_LINKS = {
   github: 'https://github.com/neuron-core/neuron-ai',
 };
 
+/** Neuron IQ packages with a website of their own */
+export const NEURON_IQ_LINKS = {
+  subagents: 'https://subagents.neuron-iq.dev/',
+  stream: 'https://stream.neuron-iq.dev/',
+};
+
 /** Neuron AI's social media pages */
 export const NEURON_AI_SOCIAL = {
   linkedin: 'https://www.linkedin.com/company/106896704/',

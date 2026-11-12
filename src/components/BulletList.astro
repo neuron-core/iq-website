@@ -1,6 +1,8 @@
 ---
-/** A plain line, or a line with a muted detail on its right */
-export type BulletItem = string | { text: string; detail: string };
+import LinkedText, { type TextWithLinks } from './LinkedText.astro';
+
+/** A plain line, with optional inline links, or a line with a muted detail on its right */
+export type BulletItem = TextWithLinks | { text: string; detail: string };
 
 interface Props {
   items: BulletItem[];
@@ -13,13 +15,19 @@ interface Props {
 }
 
 const { items, muted = false, ruled = false, size = 'm' } = Astro.props;
+
+// Each line sits in a span, so its text and links stay one flex item beside the bullet
 ---
 
 <ul class:list={['list', { muted, ruled, l: size === 'l' }]}>
   {
     items.map((item) =>
-      typeof item === 'string' ? (
-        <li>{item}</li>
+      typeof item === 'string' || Array.isArray(item) ? (
+        <li>
+          <span>
+            <LinkedText text={item} />
+          </span>
+        </li>
       ) : (
         <li>
           <span class="line">

@@ -1,0 +1,15 @@
+---
+import { linkTarget } from '../utils/links';
+
+/** A plain string, or a run of parts where each `{ text, href }` becomes an inline link */
+export type TextWithLinks = string | (string | { text: string; href: string })[];
+
+interface Props {
+  text: TextWithLinks;
+}
+
+const { text } = Astro.props;
+const parts = typeof text === 'string' ? [text] : text;
+---
+
+{parts.map((part) => (typeof part === 'string' ? part : <a href={part.href} {...linkTarget(part.href)}>{part.text}</a>))}

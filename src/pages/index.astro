@@ -11,7 +11,8 @@ import BulletList from '../components/BulletList.astro';
 import Faq from '../components/Faq.astro';
 import ContactCta from '../components/ContactCta.astro';
 import SocialLinks from '../components/SocialLinks.astro';
-import { CONTACT_FORM_URL, NEURON_AI_LINKS, PAGES } from '../consts/links';
+import LinkedText, { type TextWithLinks } from '../components/LinkedText.astro';
+import { CONTACT_FORM_URL, NEURON_AI_LINKS, NEURON_IQ_LINKS, PAGES } from '../consts/links';
 import { NEURON_IQ, NEURON_IQ_PREMIUM } from '../consts/offer';
 import { FAQ } from '../consts/faq';
 import { capitalize, formatList, numberWord } from '../utils/format';
@@ -24,7 +25,7 @@ interface LinkCard {
   link: { label: string; href: string };
 }
 
-const solutions: (LinkCard & { question: string; answer: string })[] = [
+const solutions: (LinkCard & { question: string; answer: TextWithLinks })[] = [
   {
     name: 'Neuron AI Framework',
     accent: 'ink',
@@ -37,8 +38,13 @@ const solutions: (LinkCard & { question: string; answer: string })[] = [
     name: 'Neuron IQ',
     accent: 'brand',
     question: '“Who answer my issues and support the team?”',
-    answer:
-      'The license that includes advanced packages like Subagents and IQ Streaming Server with priority fixes and direct support from the team that created it.',
+    answer: [
+      'The license that includes advanced packages like ',
+      { text: 'Subagents', href: NEURON_IQ_LINKS.subagents },
+      ' and ',
+      { text: 'IQ Streaming Server', href: NEURON_IQ_LINKS.stream },
+      ' with priority fixes and direct support from the team that created it.',
+    ],
     link: { label: 'Explore Neuron IQ', href: '#neuron-iq' },
   },
   {
@@ -105,7 +111,13 @@ const comparison = {
       label: 'A long task, like research or a report',
       cells: [
         'The user stares at a spinner. If it takes too long, the request fails.',
-        'With the Neuron Subagents and IQ-stream, the work continues in the background and the user keeps using the chat.',
+        [
+          'With the ',
+          { text: 'Neuron Subagents', href: NEURON_IQ_LINKS.subagents },
+          ' and ',
+          { text: 'IQ-stream', href: NEURON_IQ_LINKS.stream },
+          ', the work continues in the background and the user keeps using the chat.',
+        ],
         'Richer features, users not blocked',
       ],
     },
@@ -116,8 +128,12 @@ const included = [
   'Priority fixes for your bugs',
   'A direct, dedicated channel with the team that created Neuron',
   `${NEURON_IQ.consultingHours} hours of specialist consulting from the creators of Neuron`,
-  'Neuron advanced extensions like Subagents',
-  'The IQ-Server, an hyper efficient relay to stream LLM tokens from application backends to browsers in real-time.'
+  ['Neuron advanced extensions like ', { text: 'Subagents', href: NEURON_IQ_LINKS.subagents }],
+  [
+    'The ',
+    { text: 'IQ-Server', href: NEURON_IQ_LINKS.stream },
+    ', an hyper efficient relay to stream LLM tokens from application backends to browsers in real-time.',
+  ],
 ];
 
 const pages: (LinkCard & { text: string })[] = [
@@ -163,7 +179,9 @@ const pages: (LinkCard & { text: string })[] = [
           <Card as="li" accent={accent} product={product}>
             <h3 class="title-s">{name}</h3>
             <p class="question">{question}</p>
-            <p class="text-subtle">{answer}</p>
+            <p class="text-subtle">
+              <LinkedText text={answer} />
+            </p>
             <MoreLink href={link.href} class="card-link">
               {link.label}
             </MoreLink>
