@@ -26,7 +26,7 @@ export const FAQ = {
   },
   stopPaying: {
     question: 'What happens if I stop paying for Neuron IQ?',
-    answer: 'You keep the version of te code you have, but it stops receiving updates.',
+    answer: 'You keep the version of the code you have, but it stops receiving updates.',
   },
   data: {
     question: 'Where is my data?',
