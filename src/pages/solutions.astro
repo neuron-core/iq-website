@@ -46,7 +46,7 @@ const plans = {
       label: 'Specialist consulting hours from the creators of Neuron (included)',
       cells: [no, hours(NEURON_IQ.consultingHours), hours(NEURON_IQ_PREMIUM.consultingHours)],
     },
-    { label: [{ text: 'IQ-Stream for agent streaming replay', href: NEURON_IQ_LINKS.stream }], cells: [no, yes, yes] },
+    { label: [{ text: 'IQ-Stream', href: NEURON_IQ_LINKS.stream }], cells: [no, yes, yes] },
     { label: `Console: ${CONSOLE_FEATURES.map((feature) => feature.short).join(', ')}`, cells: [no, no, yes] },
     { label: `Choice between ${formatList(NEURON_IQ_PREMIUM.deployments)}`, cells: [no, no, yes] },
   ],
