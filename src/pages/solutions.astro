@@ -92,7 +92,7 @@ const appLimits =formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${limi
     <CardGrid columns={2} class="offers">
       <Card as="article" accent="brand" gap="l">
         <h3 class="title-s">Neuron IQ</h3>
-        <p class="text-body">Annual subscription, sized on the applications you have in production: up to 3, up to 10, or more on request..</p>
+        <p class="text-body">Annual subscription, sized on the applications you have in production: up to 3, up to 10, or more on request.</p>
         <p class="includes"><a href="#consultancy">Includes {flyPackage(NEURON_IQ.consultingHours)}.</a></p>
       </Card>
       <Card as="article" accent="brand" product="premium" gap="l">
@@ -100,7 +100,7 @@ const appLimits =formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${limi
           <h3 class="title-s">Neuron IQ Premium</h3>
           <Badge>Coming soon</Badge>
         </div>
-        <p class="text-body">Annual subscription, as {formatList(NEURON_IQ_PREMIUM.deployments, 'or')}.</p>
+        <p class="text-body">Annual subscription, sized on the applications you have in production: up to 3, up to 10, or more on request, as {formatList(NEURON_IQ_PREMIUM.deployments, 'or')}.</p>
         <p class="includes"><a href="#consultancy">Includes {flyPackage(NEURON_IQ_PREMIUM.consultingHours)}.</a></p>
         <MoreLink href={PAGES.premium} class="card-link">Explore Neuron IQ Premium</MoreLink>
       </Card>
