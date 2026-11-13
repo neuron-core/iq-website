@@ -14,7 +14,6 @@ export const NEURON_AI_LINKS = {
 
 /** Neuron IQ packages with a website of their own */
 export const NEURON_IQ_LINKS = {
-  subagents: 'https://subagents.neuron-iq.dev/',
   stream: 'https://stream.neuron-iq.dev/',
 };
 

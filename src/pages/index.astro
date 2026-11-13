@@ -40,8 +40,6 @@ const solutions: (LinkCard & { question: string; answer: TextWithLinks })[] = [
     question: '“Who answer my issues and support the team?”',
     answer: [
       'The license that includes advanced packages like ',
-      { text: 'Subagents', href: NEURON_IQ_LINKS.subagents },
-      ' and ',
       { text: 'IQ Streaming Server', href: NEURON_IQ_LINKS.stream },
       ' with priority fixes and direct support from the team that created it.',
     ],
@@ -113,10 +111,8 @@ const comparison = {
         'The user stares at a spinner. If it takes too long, the request fails.',
         [
           'With the ',
-          { text: 'Neuron Subagents', href: NEURON_IQ_LINKS.subagents },
-          ' and ',
           { text: 'IQ-stream', href: NEURON_IQ_LINKS.stream },
-          ', the work continues in the background and the user keeps using the chat.',
+          ', the answer reaches the browser as it is written, and the user can reconnect without losing it.',
         ],
         'Richer features, users not blocked',
       ],
@@ -128,7 +124,6 @@ const included = [
   'Priority fixes for your bugs',
   'A direct, dedicated channel with the team that created Neuron',
   `${NEURON_IQ.consultingHours} hours of specialist consulting from the creators of Neuron`,
-  ['Neuron advanced extensions like ', { text: 'Subagents', href: NEURON_IQ_LINKS.subagents }],
   [
     'The ',
     { text: 'IQ-Server', href: NEURON_IQ_LINKS.stream },
