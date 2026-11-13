@@ -46,7 +46,7 @@ const plans = {
       label: 'Specialist consulting hours from the creators of Neuron (included)',
       cells: [no, hours(NEURON_IQ.consultingHours), hours(NEURON_IQ_PREMIUM.consultingHours)],
     },
-    { label: [{ text: 'IQ-Stream', href: NEURON_IQ_LINKS.stream }], cells: [no, yes, yes] },
+    { label: [{ text: 'IQ-Stream for agent streaming replay', href: NEURON_IQ_LINKS.stream }], cells: [no, yes, yes] },
     { label: `Console: ${CONSOLE_FEATURES.map((feature) => feature.short).join(', ')}`, cells: [no, no, yes] },
     { label: `Choice between ${formatList(NEURON_IQ_PREMIUM.deployments)}`, cells: [no, no, yes] },
   ],
@@ -92,7 +92,7 @@ const appLimits =formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${limi
     <CardGrid columns={2} class="offers">
       <Card as="article" accent="brand" gap="l">
         <h3 class="title-s">Neuron IQ</h3>
-        <p class="text-body">Annual subscription includes our <a href={NEURON_IQ_LINKS.stream} target="_blank">IQ-Stream</a> server for agent streaming relay, and a basic support plan.</p>
+        <p class="text-body">Annual subscription includes our <a href={NEURON_IQ_LINKS.stream} target="_blank">IQ-Stream</a> server for agent streaming replay, and a basic support plan.</p>
         <p class="includes"><a href="#consultancy">Includes {flyPackage(NEURON_IQ.consultingHours)}.</a></p>
         <MoreLink href={NEURON_IQ_LINKS.stream} class="card-link">IQ-Stream server</MoreLink>
       </Card>
