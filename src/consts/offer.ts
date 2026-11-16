@@ -1,3 +1,5 @@
+import { formatList } from '../utils/format';
+
 /** Fly with Neuron consulting packages, in hours */
 export const FLY_PACKAGES = [4, 10, 20];
 
@@ -6,20 +8,27 @@ export function flyPackage(hours: number): string {
 }
 
 export const NEURON_IQ = {
-  /** Plans are sized on the applications in production: up to each limit, or unlimited */
+  /** Plans are sized on the applications in production: up to each limit, or beyond them */
   appLimits: [1, 3],
+  beyondLimits: 'unlimited',
   /** Hours of the Fly with Neuron package included */
   consultingHours: 4,
 };
 
 export const NEURON_IQ_PREMIUM = {
-  /** Plans are sized on the applications in production: up to each limit, or more on request */
+  /** Plans are sized on the applications in production: up to each limit, or beyond them */
   appLimits: [3, 10],
+  beyondLimits: 'more on request',
   consultingHours: 10,
   deployments: ['SaaS', 'on-premise'],
   saasRegion: 'a European region (Amsterdam)',
   saasProvider: 'a US provider',
 };
+
+/** The applications in production a plan can be sized on: "up to 1, up to 3 or unlimited" */
+export function appSizes(plan: { appLimits: number[]; beyondLimits: string }): string {
+  return formatList([...plan.appLimits.map((limit) => `up to ${limit}`), plan.beyondLimits], 'or');
+}
 
 /** The Neuron IQ Premium console. `short` names the feature in the plans table. */
 export const CONSOLE_FEATURES = [

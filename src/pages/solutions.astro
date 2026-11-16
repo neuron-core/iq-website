@@ -20,9 +20,10 @@ import {
   NEURON_IQ,
   NEURON_IQ_PREMIUM,
   TRAINING,
+  appSizes,
   flyPackage,
 } from '../consts/offer';
-import { formatList } from '../utils/format';
+import { capitalize, formatList } from '../utils/format';
 
 const hours = (count: number) => `${count} hours`;
 
@@ -50,6 +51,10 @@ const plans = {
     { label: 'Custom extensions development', cells: [no, yes, no] },
     { label: `Console: ${CONSOLE_FEATURES.map((feature) => feature.short).join(', ')}`, cells: [no, no, yes] },
     { label: `Choice between ${formatList(NEURON_IQ_PREMIUM.deployments)}`, cells: [no, no, yes] },
+    {
+      label: 'Annual subscription, sized on your applications in production',
+      cells: [no, capitalize(appSizes(NEURON_IQ)), capitalize(appSizes(NEURON_IQ_PREMIUM))],
+    },
   ],
   cta: { label: 'Talk to us', href: CONTACT_FORM_URL },
 };
@@ -73,8 +78,6 @@ const paths = [
   },
 ];
 
-const sizes = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${limit}`), 'unlimited'], 'or');
-const premiumSizes = formatList([...NEURON_IQ_PREMIUM.appLimits.map((limit) => `up to ${limit}`), 'more on request'], 'or');
 ---
 
 <BaseLayout
@@ -94,7 +97,7 @@ const premiumSizes = formatList([...NEURON_IQ_PREMIUM.appLimits.map((limit) => `
     <CardGrid columns={2} class="offers">
       <Card as="article" accent="brand" gap="l">
         <h3 class="title-s">Neuron IQ</h3>
-        <p class="text-body">Annual subscription, sized on the applications you have in production: {sizes}. It includes our <a href={NEURON_IQ_LINKS.stream} target="_blank">IQ-Stream</a> server for agent streaming replay, custom extensions development, and a basic support plan.</p>
+        <p class="text-body">Annual subscription, sized on the applications you have in production: {appSizes(NEURON_IQ)}. It includes our <a href={NEURON_IQ_LINKS.stream} target="_blank">IQ-Stream</a> server for agent streaming replay, custom extensions development, and a basic support plan.</p>
         <p class="includes"><a href="#consultancy">Includes {flyPackage(NEURON_IQ.consultingHours)}.</a></p>
         <MoreLink href={NEURON_IQ_LINKS.stream} class="card-link">IQ-Stream server</MoreLink>
       </Card>
@@ -103,7 +106,7 @@ const premiumSizes = formatList([...NEURON_IQ_PREMIUM.appLimits.map((limit) => `
           <h3 class="title-s">Neuron IQ Premium</h3>
           <Badge>Coming soon</Badge>
         </div>
-        <p class="text-body">Annual subscription, sized on the applications you have in production: {premiumSizes}, as {formatList(NEURON_IQ_PREMIUM.deployments, 'or')}.</p>
+        <p class="text-body">Annual subscription, sized on the applications you have in production: {appSizes(NEURON_IQ_PREMIUM)}, as {formatList(NEURON_IQ_PREMIUM.deployments, 'or')}.</p>
         <p class="includes"><a href="#consultancy">Includes {flyPackage(NEURON_IQ_PREMIUM.consultingHours)}.</a></p>
         <MoreLink href={PAGES.premium} class="card-link">Explore Neuron IQ Premium</MoreLink>
       </Card>
