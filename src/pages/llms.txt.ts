@@ -8,7 +8,8 @@ import { CONSOLE_FEATURES, FLY_PACKAGES, NEURON_IQ, NEURON_IQ_PREMIUM, flyPackag
 import { PARTNER_TIERS } from '../consts/partners';
 import { formatList } from '../utils/format';
 
-const appLimits = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${limit}`), 'unlimited'], 'or');
+const sizes = formatList([...NEURON_IQ.appLimits.map((limit) => `up to ${limit}`), 'unlimited'], 'or');
+const premiumSizes = formatList([...NEURON_IQ_PREMIUM.appLimits.map((limit) => `up to ${limit}`), 'more on request'], 'or');
 const consoleFeatures = formatList(CONSOLE_FEATURES.map((feature) => feature.name.toLowerCase()));
 const tierNames = formatList(PARTNER_TIERS.map((tier) => tier.name));
 const deployments = formatList(NEURON_IQ_PREMIUM.deployments, 'or');
@@ -19,8 +20,8 @@ const body = `# Neuron IQ
 
 Neuron AI is the first agentic framework of the PHP ecosystem, open source under the ${FRAMEWORK.license} license. Neuron IQ and Neuron IQ Premium come from the team that created it, and work with Neuron v${FRAMEWORK.version}.
 
-- Neuron IQ: the certified distribution of the framework, with priority fixes, a direct, dedicated channel with the team that created Neuron, ${NEURON_IQ.consultingHours} hours of specialist consulting and [IQ-Stream](${NEURON_IQ_LINKS.stream}). Annual subscription, sized on the applications in production: ${appLimits}.
-- Neuron IQ Premium (coming soon): the ready-to-use platform to run, monitor and improve your agents: ${consoleFeatures}. Annual subscription, as ${deployments}. Includes ${flyPackage(NEURON_IQ_PREMIUM.consultingHours)}.
+- Neuron IQ: advanced extensions and direct access to the team that created Neuron. It includes [IQ-Stream](${NEURON_IQ_LINKS.stream}), custom extensions development, priority fixes for your bugs, and a direct, dedicated channel with the team that created Neuron. Annual subscription, sized on the applications in production: ${sizes}. Includes ${flyPackage(NEURON_IQ.consultingHours)}.
+- Neuron IQ Premium (coming soon): the ready-to-use platform to run, monitor and improve your agents: ${consoleFeatures}. Annual subscription, sized on the applications in production: ${premiumSizes}, as ${deployments}. Includes ${flyPackage(NEURON_IQ_PREMIUM.consultingHours)}.
 - Fly with Neuron: specialist and advanced consulting packages from the people who created Neuron, of ${formatList(FLY_PACKAGES.map(String))} hours.
 
 ## Pages

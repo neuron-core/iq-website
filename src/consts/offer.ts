@@ -13,6 +13,8 @@ export const NEURON_IQ = {
 };
 
 export const NEURON_IQ_PREMIUM = {
+  /** Plans are sized on the applications in production: up to each limit, or more on request */
+  appLimits: [3, 10],
   consultingHours: 10,
   deployments: ['SaaS', 'on-premise'],
   saasRegion: 'a European region (Amsterdam)',
