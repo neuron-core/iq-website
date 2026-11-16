@@ -13,7 +13,7 @@ import ContactCta from '../components/ContactCta.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import LinkedText, { type TextWithLinks } from '../components/LinkedText.astro';
 import { CONTACT_FORM_URL, NEURON_AI_LINKS, NEURON_IQ_LINKS, PAGES } from '../consts/links';
-import { NEURON_IQ, NEURON_IQ_PREMIUM, appSizes } from '../consts/offer';
+import { NEURON_IQ, NEURON_IQ_PREMIUM } from '../consts/offer';
 import { FAQ } from '../consts/faq';
 import { capitalize, formatList, numberWord } from '../utils/format';
 
@@ -25,7 +25,7 @@ interface LinkCard {
   link: { label: string; href: string };
 }
 
-const solutions: (LinkCard & { question: string; answer: TextWithLinks; sizes?: string })[] = [
+const solutions: (LinkCard & { question: string; answer: TextWithLinks })[] = [
   {
     name: 'Neuron AI Framework',
     accent: 'ink',
@@ -43,7 +43,6 @@ const solutions: (LinkCard & { question: string; answer: TextWithLinks; sizes?: 
       { text: 'IQ-Stream', href: NEURON_IQ_LINKS.stream },
       ' with priority fixes and direct support from the team that created it.',
     ],
-    sizes: appSizes(NEURON_IQ),
     link: { label: 'Explore Neuron IQ', href: '#neuron-iq' },
   },
   {
@@ -52,7 +51,6 @@ const solutions: (LinkCard & { question: string; answer: TextWithLinks; sizes?: 
     product: 'premium',
     question: '“Who guarantees my infrastructure going to production?”',
     answer: 'The ready-to-use platform to run, monitor and improve your agents.',
-    sizes: appSizes(NEURON_IQ_PREMIUM),
     link: { label: 'Explore Neuron IQ Premium', href: PAGES.premium },
   },
 ];
@@ -119,14 +117,6 @@ const comparison = {
         'You avoid rewriting later',
       ],
     },
-    {
-      label: 'You put more applications in production',
-      cells: [
-        'Each new application is yours alone to support.',
-        `One annual subscription, sized on your applications in production: ${appSizes(NEURON_IQ)}.`,
-        'Support that grows with you',
-      ],
-    },
   ],
 };
 
@@ -180,14 +170,13 @@ const pages: (LinkCard & { text: string })[] = [
   <Section tone="band" title={`${capitalize(numberWord(solutions.length))} solutions to build the best Agentic Applications in PHP`}>
     <CardGrid as="ul" columns={3}>
       {
-        solutions.map(({ name, accent, product, question, answer, sizes, link }) => (
+        solutions.map(({ name, accent, product, question, answer, link }) => (
           <Card as="li" accent={accent} product={product}>
             <h3 class="title-s">{name}</h3>
             <p class="question">{question}</p>
             <p class="text-subtle">
               <LinkedText text={answer} />
             </p>
-            {sizes && <p class="sizes">Annual subscription, sized on your applications in production: {sizes}.</p>}
             <MoreLink href={link.href} class="card-link">
               {link.label}
             </MoreLink>
@@ -284,19 +273,6 @@ const pages: (LinkCard & { text: string })[] = [
   .card-link {
     align-self: flex-start;
     margin-top: auto;
-  }
-
-  // A plan's sizing, ruled off above its link and level across the row
-  .sizes {
-    margin-top: auto;
-    padding-top: var(--s-16);
-    border-top: var(--border-width-hairline) solid var(--border-soft);
-    color: var(--text-brand);
-    font-weight: var(--font-weight-medium);
-
-    + .card-link {
-      margin-top: 0;
-    }
   }
 
   .question {
