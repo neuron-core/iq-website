@@ -31,10 +31,23 @@ export const PAGES = {
   partners: '/partners/',
 };
 
-/** Header and footer navigation. `product` gives an item its product's color in the header. */
-export const MAIN_NAV: { label: string; href: string; product?: 'premium' }[] = [
+type NavLink = { label: string; href: string };
+
+/**
+ * Header and footer navigation. `product` gives an item its product's color in the header.
+ * `children` become a dropdown in the header (and indented links in the phone menu); the footer ignores them.
+ */
+export const MAIN_NAV: (NavLink & { product?: 'premium'; children?: NavLink[] })[] = [
+  {
+    label: 'Solutions',
+    href: PAGES.solutions,
+    children: [
+      { label: 'The answer you need', href: `${PAGES.solutions}#compare` },
+      { label: 'Consultancy & Training', href: `${PAGES.solutions}#consultancy` },
+      { label: 'Certifications', href: `${PAGES.solutions}#certification` },
+    ],
+  },
   { label: 'Neuron IQ Premium', href: PAGES.premium, product: 'premium' },
-  { label: 'Solutions', href: PAGES.solutions },
   { label: 'Partner Network', href: PAGES.partners },
   { label: 'FAQ', href: `${PAGES.home}#faq` },
 ];

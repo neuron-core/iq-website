@@ -14,11 +14,22 @@ const { pathname } = Astro.url;
     <nav class="nav" aria-label="Main">
       <ul class="nav-list">
         {
-          MAIN_NAV.map(({ label, href, product }) => (
-            <li>
+          MAIN_NAV.map(({ label, href, product, children }) => (
+            <li class:list={{ 'has-sub': children }}>
               <a class="nav-link" href={href} aria-current={ariaCurrent(href, pathname)} data-product={product}>
                 {label}
               </a>
+              {children && (
+                <ul class="sub">
+                  {children.map((child) => (
+                    <li>
+                      <a class="sub-link" href={child.href}>
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))
         }
@@ -31,11 +42,22 @@ const { pathname } = Astro.url;
         <nav class="panel" aria-label="Main, mobile">
           <ul>
             {
-              MAIN_NAV.map(({ label, href, product }) => (
+              MAIN_NAV.map(({ label, href, product, children }) => (
                 <li>
                   <a class="menu-link" href={href} aria-current={ariaCurrent(href, pathname)} data-product={product}>
                     {label}
                   </a>
+                  {children && (
+                    <ul>
+                      {children.map((child) => (
+                        <li>
+                          <a class="menu-sublink" href={child.href}>
+                            {child.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))
             }
@@ -45,6 +67,16 @@ const { pathname } = Astro.url;
     </div>
   </Container>
 </header>
+
+<script>
+  // A link to a section of the page you are on doesn't load a new page,
+  // so the phone menu would stay open over the section: close it by hand.
+  document.querySelectorAll<HTMLDetailsElement>('.header .menu').forEach((menu) => {
+    menu.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a')) menu.open = false;
+    });
+  });
+</script>
 
 <style lang="scss">
   @use "../styles/variables/breakpoints" as bp;
@@ -132,7 +164,83 @@ const { pathname } = Astro.url;
     }
   }
 
-  // Phone navigation: a native disclosure, no script needed
+  // Desktop dropdown: opens on hover, and on keyboard focus (not after a mouse click,
+  // so it closes once the pointer leaves even when the clicked link keeps focus).
+  // Closed, it is only transparent and unclickable, not hidden: its links stay in the
+  // tab order, so Shift+Tab from the next item reaches them too.
+  .has-sub {
+    position: relative;
+
+    > .nav-link::after {
+      content: "";
+      display: inline-block;
+      width: 0.4em;
+      height: 0.4em;
+      margin-inline: var(--s-8) var(--s-2); // the right margin keeps the turned tip inside the focus ring
+      border-right: var(--border-width-strong) solid currentColor;
+      border-bottom: var(--border-width-strong) solid currentColor;
+      transform: translateY(-0.2em) rotate(45deg);
+      transition: transform var(--duration-fast) var(--easing-standard);
+    }
+
+    // Bridges the gap down to the list while the pointer travels across it
+    &:hover::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      height: calc(var(--header-height) / 2 - 50%);
+    }
+
+    &:hover,
+    &:has(:focus-visible) {
+      > .nav-link::after {
+        transform: translateY(0.05em) rotate(-135deg);
+      }
+
+      > .sub {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+
+  // Hangs from the header's bottom line: the item sits in the middle of the header,
+  // so half the header height below its middle, the top borders of both coincide
+  .sub {
+    position: absolute;
+    top: calc(50% + var(--header-height) / 2);
+    left: calc(-1 * var(--s-16));
+    z-index: var(--z-index-medium);
+    padding-block: var(--s-8);
+    background: var(--bg-primary);
+    border: var(--border-width-hairline) solid var(--border-soft);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-fast) var(--easing-standard);
+  }
+
+  .sub-link {
+    display: block;
+    padding: var(--s-8) var(--s-16);
+    color: var(--text-primary);
+    font-size: var(--body-m-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--body-m-line);
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      color var(--duration-fast) var(--easing-standard),
+      background-color var(--duration-fast) var(--easing-standard);
+
+    &:hover {
+      color: var(--text-strong);
+      background: var(--bg-weak);
+    }
+  }
+
+  // Phone navigation: a native disclosure; the script only closes it after an in-page link
   .menu {
     @include bp.up(md) {
       display: none;
@@ -194,5 +302,18 @@ const { pathname } = Astro.url;
     &[data-product] {
       color: var(--text-brand);
     }
+  }
+
+  .menu-sublink {
+    display: flex;
+    align-items: center;
+    min-height: var(--touch-target-min);
+    padding-left: var(--s-16);
+    border-bottom: var(--border-width-hairline) solid var(--border-soft);
+    color: var(--text-subtle);
+    font-size: var(--paragraph-m-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--paragraph-m-line);
+    text-decoration: none;
   }
 </style>
